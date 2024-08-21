@@ -6,7 +6,7 @@ end
 Elite = {
     cache = {}
 }
-local server = IsDuplicityVersion()
+local isServer = IsDuplicityVersion()
 local printtypes = {
     ["error"] = "^1[ERROR] ^0",
     ["success"] = "^2[SUCCESS] ^0",
@@ -83,7 +83,7 @@ local function setup()
     for name, module in pairs(Config.Modules) do
         local setting = Config.Settings[name]
 
-        if server and module.server then
+        if isServer and module.server then
             for framework, path in pairs(module.server) do
                 if loadedModules.server[name] then break end
                 if setting and framework ~= setting then goto continue end
@@ -102,7 +102,7 @@ local function setup()
             if not loadedModules.server[name] and name ~= "Target" then
                 table.insert(missingCategories, name)
             end
-        elseif not server and module.client then
+        elseif not isServer and module.client then
             for framework, path in pairs(module.client) do
                 if loadedModules.client[name] then break end
                 CreateThread(function()
@@ -130,7 +130,7 @@ local function setup()
         end
     end
 
-    if server then
+    if isServer then
         for _, category in ipairs(missingCategories) do
             DebugPrint(("No active resources found for category %s, functionality will not work"):format(category), "error")
         end
