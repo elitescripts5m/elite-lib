@@ -1,3 +1,4 @@
+local data = {}
 QBCore = exports['qb-core']:GetCoreObject()
 
 local function validatePlayer(player)
@@ -9,8 +10,6 @@ local function validatePlayer(player)
     end
     return true
 end
-
-local data = {}
 
 data.getPlayerFromId = function(playerId)
     if not CheckArgs(playerId) then return end

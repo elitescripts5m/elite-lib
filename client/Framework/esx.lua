@@ -1,6 +1,5 @@
-local data = {}
-
 ESX = exports['es_extended']:getSharedObject()
+local data = {}
 
 data.getName = function()
     local playerdata = ESX.GetPlayerData()

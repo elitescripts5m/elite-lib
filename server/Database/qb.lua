@@ -1,5 +1,4 @@
 local data = {}
-
 local playerColumns = nil
 local vehicleColumns = nil
 
@@ -29,7 +28,6 @@ data.getUserData = function(args, additionalColumns, callback)
     local validColumns = {}
     local params = {}
     local conditions = {}
-    local aliasMap = {}
 
     for _, col in ipairs(baseColumns) do
         table.insert(validColumns, col)
@@ -42,7 +40,6 @@ data.getUserData = function(args, additionalColumns, callback)
             elseif type(value) == "string" and value:find(" as ") then
                 local col, alias = value:match("^(.-) as (.+)$")
                 table.insert(validColumns, col)
-                aliasMap[col] = alias
             else
                 table.insert(validColumns, value)
             end
@@ -51,7 +48,7 @@ data.getUserData = function(args, additionalColumns, callback)
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
-        if playerColumns[col:gsub('`', '')] then
+        if playerColumns and playerColumns[col:gsub('`', '')] then
             table.insert(foundColumns, col)
         end
     end
@@ -68,9 +65,7 @@ data.getUserData = function(args, additionalColumns, callback)
         end
         params['@' .. k] = v
     end
-    local query = 'SELECT ' ..
-        table.concat(foundColumns, ', ') ..
-        ' FROM players WHERE ' .. table.concat(conditions, useOr and ' OR ' or ' AND ')
+    local query = 'SELECT ' .. table.concat(foundColumns, ', ') .. ' FROM players WHERE ' .. table.concat(conditions, useOr and ' OR ' or ' AND ')
     MySQL.Async.fetchAll(query, params, function(result)
         if result and #result > 0 then
             local row = result[1]
@@ -128,7 +123,6 @@ data.getVehicleData = function(args, additionalColumns, callback)
     local validColumns = {}
     local params = {}
     local conditions = {}
-    local aliasMap = {}
 
     for _, col in ipairs(baseColumns) do
         table.insert(validColumns, col)
@@ -141,7 +135,6 @@ data.getVehicleData = function(args, additionalColumns, callback)
             elseif type(value) == "string" and value:find(" as ") then
                 local col, alias = value:match("^(.-) as (.+)$")
                 table.insert(validColumns, col)
-                aliasMap[col] = alias
             else
                 table.insert(validColumns, value)
             end
@@ -150,7 +143,7 @@ data.getVehicleData = function(args, additionalColumns, callback)
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
-        if vehicleColumns[col:gsub('`', '')] then
+        if vehicleColumns and vehicleColumns[col:gsub('`', '')] then
             table.insert(foundColumns, col)
         end
     end
@@ -164,8 +157,7 @@ data.getVehicleData = function(args, additionalColumns, callback)
         params['@' .. k] = v
     end
 
-    local query = 'SELECT ' ..
-        table.concat(foundColumns, ', ') .. ' FROM player_vehicles WHERE ' .. table.concat(conditions, ' AND ')
+    local query = 'SELECT ' .. table.concat(foundColumns, ', ') .. ' FROM player_vehicles WHERE ' .. table.concat(conditions, ' AND ')
     MySQL.Async.fetchAll(query, params, function(result)
         if #result > 0 then
             local vehicles = {}

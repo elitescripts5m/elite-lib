@@ -1,5 +1,4 @@
 local data = {}
-
 local QBCore = exports['qb-core']:GetCoreObject()
 
 data.openInventory = function(playerId, inventoryType, inventoryData)

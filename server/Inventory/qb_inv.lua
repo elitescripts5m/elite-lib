@@ -1,5 +1,4 @@
 local data = {}
-
 local QBCore = exports['qb-core']:GetCoreObject()
 local inventory = exports['qb-inventory']
 

@@ -1,5 +1,4 @@
 local data = {}
-
 local userColumns = nil
 local vehicleColumns = nil
 
@@ -42,7 +41,7 @@ data.getUserData = function(args, additionalColumns, callback)
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
-        if userColumns[col:gsub('`', '')] then
+        if userColumns and userColumns[col:gsub('`', '')] then
             table.insert(foundColumns, col)
         end
     end
@@ -60,9 +59,7 @@ data.getUserData = function(args, additionalColumns, callback)
         params['@' .. k] = v
     end
 
-    local query = 'SELECT ' ..
-        table.concat(foundColumns, ', ') ..
-        ' FROM users WHERE ' .. table.concat(conditions, useOr and ' OR ' or ' AND ')
+    local query = 'SELECT ' .. table.concat(foundColumns, ', ') .. ' FROM users WHERE ' .. table.concat(conditions, useOr and ' OR ' or ' AND ')
     MySQL.Async.fetchAll(query, params, function(result)
         if result and #result > 0 then
             local userData = {}
@@ -101,7 +98,7 @@ data.getVehicleData = function(args, additionalColumns, callback)
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
-        if vehicleColumns[col:gsub('`', '')] then
+        if vehicleColumns and vehicleColumns[col:gsub('`', '')] then
             table.insert(foundColumns, col)
         end
     end
@@ -111,8 +108,7 @@ data.getVehicleData = function(args, additionalColumns, callback)
         params['@' .. k] = v
     end
 
-    local query = 'SELECT ' ..
-        table.concat(foundColumns, ', ') .. ' FROM owned_vehicles WHERE ' .. table.concat(conditions, ' AND ')
+    local query = 'SELECT ' .. table.concat(foundColumns, ', ') .. ' FROM owned_vehicles WHERE ' .. table.concat(conditions, ' AND ')
     MySQL.Async.fetchAll(query, params, function(result)
         if #result > 0 then
             local vehicles = {}

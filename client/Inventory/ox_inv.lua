@@ -1,6 +1,5 @@
-local data = {}
-
 local inventory = exports.ox_inventory
+local data = {}
 
 data.openInventory = function(inventoryType, inventoryData)
     if not CheckArgs(type, data) then return end

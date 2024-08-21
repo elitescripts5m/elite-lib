@@ -1,5 +1,4 @@
 local data = {}
-
 local inventory = exports.ox_inventory
 
 data.openInventory = function(playerId, inventoryType, inventoryData)

@@ -1,5 +1,4 @@
 local data = {}
-
 ESX = exports['es_extended']:getSharedObject()
 
 data.openInventory = function(playerId, inventoryType, inventoryData)

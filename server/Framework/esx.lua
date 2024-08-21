@@ -1,3 +1,4 @@
+local data = {}
 ESX = exports['es_extended']:getSharedObject()
 
 local function validatePlayer(player)
@@ -9,7 +10,6 @@ local function validatePlayer(player)
     end
     return true
 end
-local data = {}
 
 data.getPlayerFromId = function(playerId)
     if not CheckArgs(playerId) then return end
@@ -61,7 +61,7 @@ data.getJob = function(frPlayer)
         grade_name = job.grade_name,
         grade_label = job.grade_label,
     }
-    
+
     return response
 end
 
@@ -90,14 +90,14 @@ end
 data.getJobs = function()
     local jobs = ESX.GetJobs()
     local response = {}
-    
+
     for jobname, jobdata in pairs(jobs) do
         local jobInfo = {
             name = jobname,
             label = jobdata.label,
             grades = {}
         }
-        
+
         for grade, gradeData in pairs(jobdata.grades) do
             jobInfo.grades[tonumber(grade)] = {
                 grade = tonumber(grade),
@@ -105,12 +105,11 @@ data.getJobs = function()
                 label = gradeData.label
             }
         end
-        
+
         table.insert(response, jobInfo)
     end
-    
+
     return response
 end
-
 
 return data

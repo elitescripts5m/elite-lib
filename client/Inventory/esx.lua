@@ -1,6 +1,5 @@
-local data = {}
-
 ESX = exports['es_extended']:getSharedObject()
+local data = {}
 
 data.openInventory = function(inventoryType, inventoryData)
     if not CheckArgs(inventoryType, inventoryData) then return end
@@ -13,14 +12,12 @@ data.getCurrentWeapon = function()
     local weaponHash = GetSelectedPedWeapon(playerPed)
     local weapon = nil
     local xPlayer = ESX.GetPlayerData()
-    
     for _, item in pairs(xPlayer.inventory) do
         if item.name == weaponHash then
             weapon = item
             break
         end
     end
-    
     return weapon
 end
 

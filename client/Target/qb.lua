@@ -1,6 +1,5 @@
-local data = {}
-
 local qbtarget = exports['qb-target']
+local data = {}
 
 data.addEntityTarget = function(netIds, options)
     if not CheckArgs(netIds, options) then return end

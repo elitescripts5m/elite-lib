@@ -1,6 +1,5 @@
-local data = {}
-
 local oxtarget = exports.ox_target
+local data = {}
 
 data.addEntityTarget = function(netIds, options)
     if not CheckArgs(netIds, options) then return end

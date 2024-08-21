@@ -1,7 +1,6 @@
-local data = {}
-
 QBCore = exports['qb-core']:GetCoreObject()
 qbx = exports.qbx_core
+local data = {}
 
 data.getName = function()
     local charinfo = qbx:GetPlayerData().charinfo
