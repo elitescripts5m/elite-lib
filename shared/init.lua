@@ -3,7 +3,9 @@ if resourceName ~= "elite-bridge" then
     return print(("Change resource name from %s to elite-bridge in order to use our resources!"):format(resourceName))
 end
 
-Elite = {}
+Elite = {
+    cache = {}
+}
 local server = IsDuplicityVersion()
 local printtypes = {
     ["error"] = "^1[ERROR] ^0",
@@ -30,6 +32,12 @@ function CheckArgs(...)
         end
     end
     return true
+end
+
+function AddCache(key, value)
+    if not key or not value then return end
+    Elite.cache[key] = value
+    DebugPrint(("Cache added: '%s' = %s"):format(key, value), "info")
 end
 
 local function loadBridgeModule(modulePath)
@@ -125,6 +133,18 @@ local function setup()
     if server then
         for _, category in ipairs(missingCategories) do
             DebugPrint(("No active resources found for category %s, functionality will not work"):format(category), "error")
+        end
+    else
+        local ped = PlayerPedId()
+        local playerId = PlayerId()
+        local serverId = GetPlayerServerId(playerId)
+        local addToCache = {
+            ped = ped,
+            playerId = playerId,
+            serverId = serverId
+        }
+        for k, v in pairs(addToCache) do
+            AddCache(k, v)
         end
     end
 end
