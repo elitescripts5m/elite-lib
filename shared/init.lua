@@ -35,9 +35,20 @@ function CheckArgs(...)
 end
 
 function AddCache(key, value)
-    if not key or not value then return end
+    if not CheckArgs(key, value) then return end
     Elite.cache[key] = value
     DebugPrint(("Cache added: '%s' = %s"):format(key, value), "info")
+end
+
+function RemoveCache(key)
+    if not CheckArgs(key) then return end
+    for k, _ in pairs(Elite.cache) do
+        if k == key then
+            table.remove(Elite.cache, key)
+            DebugPrint(("Cache removed w/ index: '%s'"):format(key), "info")
+            break
+        end
+    end
 end
 
 local function loadBridgeModule(modulePath)
