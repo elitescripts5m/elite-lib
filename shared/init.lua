@@ -87,17 +87,19 @@ function DebugPrint(message, type)
 end
 
 local function updateCheck(resourceName)
-    -- local currentVersion = GetResourceMetadata(resourceName, "version")
-	-- if not currentVersion then return print(("^1Unable to determine current resource version for '%s' ^0"):format(resourceName)) end
-    -- PerformHttpRequest("API_LÄNK_HÄR", function(status, response)
-    --     if status ~= 200 then return end
-    --     local data = json.decode(response)
-    --     if currentVersion ~= data.tag_name then
-    --         print("^2[UPDATE] ^7An update for ^2"..resourceName.." (v"..data.tag_name..") ^7is available. Check out our discord (https://discord.gg/hM228ZYhbY) for changelogs.")
-    --     else
-    --         print("^4[INFO] ^7Resource ^2"..resourceName.." ("..currentVersion..") ^7has been started successfully.")
-    --     end
-    -- end, "GET")
+    local currentVersion = GetResourceMetadata(resourceName, "version", 0)
+    if not currentVersion then return print(("^1Unable to determine current resource version for '%s' ^0"):format(resourceName)) end
+    PerformHttpRequest("https://elite-website-sable.vercel.app/api/release?script_name="..resourceName, function(status, response)
+        if status ~= 200 then return end
+        local data = json.decode(response)[1]
+        if currentVersion ~= data.version then
+            print("^2[UPDATE] ^7An update for ^2"..resourceName.." ^7is available.")
+            print("Current version: ^1v"..currentVersion.."^0. Latest version: ^5v"..data.version.."^0.")
+            print("Check out our discord (^4https://discord.gg/hM228ZYhbY^0) for changelogs.")
+        else
+            print("^4[INFO] ^7Resource ^2"..resourceName.." (v"..currentVersion..") ^7has been started successfully.")
+        end
+    end, "GET")
 end
 
 local resourceName = GetCurrentResourceName()
