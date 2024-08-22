@@ -1,7 +1,7 @@
-local qbtarget = exports['qb-target']
-local data = {}
+local qbtarget = exports["qb-target"]
+local module = {}
 
-data.addEntityTarget = function(netIds, options)
+module.addEntityTarget = function(netIds, options)
     if not CheckArgs(netIds, options) then return end
     local formattedOptions = {}
     for _, option in pairs(options) do
@@ -16,7 +16,7 @@ data.addEntityTarget = function(netIds, options)
     qbtarget:AddTargetEntity(netIds, { options = formattedOptions, distance = 2.0 })
 end
 
-data.addCircleZone = function(circledata)
+module.addCircleZone = function(circledata)
     if not CheckArgs(circledata.coords, circledata.options) then return end
     local name = circledata.name or ("circleZone" .. math.random(1, 999999999))
     local radius = circledata.radius or 1.5
@@ -36,7 +36,7 @@ data.addCircleZone = function(circledata)
     })
 end
 
-data.addBoxZone = function(boxdata)
+module.addBoxZone = function(boxdata)
     if not CheckArgs(boxdata.coords, boxdata.size, boxdata.options) then return end
     local name = boxdata.name or ("boxZone" .. math.random(1, 999999999))
     local length = boxdata.size.x
@@ -58,4 +58,4 @@ data.addBoxZone = function(boxdata)
     })
 end
 
-return data
+return module

@@ -1,15 +1,15 @@
-local data = {}
+local module = {}
 local userColumns = nil
 local vehicleColumns = nil
 
 CreateThread(function()
-    MySQL.Async.fetchAll('SHOW COLUMNS FROM owned_vehicles', {}, function(columnsResult)
+    MySQL.Async.fetchAll("SHOW COLUMNS FROM owned_vehicles", {}, function(columnsResult)
         vehicleColumns = {}
         for _, column in ipairs(columnsResult) do
             vehicleColumns[column.Field] = true
         end
     end)
-    MySQL.Async.fetchAll('SHOW COLUMNS FROM users', {}, function(columnsResult)
+    MySQL.Async.fetchAll("SHOW COLUMNS FROM users", {}, function(columnsResult)
         userColumns = {}
         for _, column in ipairs(columnsResult) do
             userColumns[column.Field] = true
@@ -17,14 +17,11 @@ CreateThread(function()
     end)
 end)
 
-data.getUserData = function(args, additionalColumns, callback)
+module.getUserData = function(args, additionalColumns, callback)
     if not CheckArgs(args, callback) then return end
+    if not userColumns then return end
 
-    if not userColumns then
-        loadUserColumns()
-    end
-
-    local baseColumns = { 'firstname', 'lastname', 'sex', 'dob', 'identifier' }
+    local baseColumns = { "firstname", "lastname", "sex", "dob", "identifier" }
     local validColumns = {}
     local params = {}
     local conditions = {}
@@ -41,7 +38,7 @@ data.getUserData = function(args, additionalColumns, callback)
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
-        if userColumns and userColumns[col:gsub('`', '')] then
+        if userColumns and userColumns[col:gsub("`", "")] then
             table.insert(foundColumns, col)
         end
     end
@@ -52,21 +49,21 @@ data.getUserData = function(args, additionalColumns, callback)
     for k, v in pairs(args) do
         local columnName = k
         if v:find("%%") then
-            table.insert(conditions, columnName .. ' LIKE @' .. k)
+            table.insert(conditions, columnName .. " LIKE @" .. k)
         else
-            table.insert(conditions, columnName .. ' = @' .. k)
+            table.insert(conditions, columnName .. " = @" .. k)
         end
-        params['@' .. k] = v
+        params["@" .. k] = v
     end
 
-    local query = 'SELECT ' .. table.concat(foundColumns, ', ') .. ' FROM users WHERE ' .. table.concat(conditions, useOr and ' OR ' or ' AND ')
+    local query = "SELECT " .. table.concat(foundColumns, ", ") .. " FROM users WHERE " .. table.concat(conditions, useOr and " OR " or " AND ")
     MySQL.Async.fetchAll(query, params, function(result)
         if result and #result > 0 then
             local userData = {}
             for _, col in ipairs(foundColumns) do
-                userData[col:gsub('`', '')] = result[1][col:gsub('`', '')]
+                userData[col:gsub("`", "")] = result[1][col:gsub("`", "")]
             end
-            userData.sex = result[1].sex == 'm' and 'male' or 'female'
+            userData.sex = result[1].sex == "m" and "male" or "female"
             callback(userData)
         else
             callback(nil)
@@ -74,14 +71,11 @@ data.getUserData = function(args, additionalColumns, callback)
     end)
 end
 
-data.getVehicleData = function(args, additionalColumns, callback)
+module.getVehicleData = function(args, additionalColumns, callback)
     if not CheckArgs(args, callback) then return end
+    if not vehicleColumns then return callback({}) end
 
-    if not vehicleColumns then
-        loadVehicleColumns()
-    end
-
-    local baseColumns = { 'owner', 'plate', 'vehicle', 'stored' }
+    local baseColumns = { "owner", "plate", "vehicle", "stored" }
     local validColumns = {}
     local params = {}
     local conditions = {}
@@ -98,17 +92,17 @@ data.getVehicleData = function(args, additionalColumns, callback)
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
-        if vehicleColumns and vehicleColumns[col:gsub('`', '')] then
+        if vehicleColumns and vehicleColumns[col:gsub("`", "")] then
             table.insert(foundColumns, col)
         end
     end
 
     for k, v in pairs(args) do
-        table.insert(conditions, k .. ' = @' .. k)
-        params['@' .. k] = v
+        table.insert(conditions, k .. " = @" .. k)
+        params["@" .. k] = v
     end
 
-    local query = 'SELECT ' .. table.concat(foundColumns, ', ') .. ' FROM owned_vehicles WHERE ' .. table.concat(conditions, ' AND ')
+    local query = "SELECT " .. table.concat(foundColumns, ", ") .. " FROM owned_vehicles WHERE " .. table.concat(conditions, " AND ")
     MySQL.Async.fetchAll(query, params, function(result)
         if #result > 0 then
             local vehicles = {}
@@ -116,11 +110,11 @@ data.getVehicleData = function(args, additionalColumns, callback)
 
             for _, vehicle in ipairs(result) do
                 local ownerIdentifier = vehicle.owner
-                data.getUserData({ identifier = ownerIdentifier }, { 'firstname', 'lastname' }, function(userData)
+                module.getUserData({ identifier = ownerIdentifier }, { "firstname", "lastname" }, function(userData)
                     local vehicleData = {
                         owner = userData and {
                             identifier = ownerIdentifier,
-                            name = userData.firstname .. ' ' .. userData.lastname
+                            name = userData.firstname .. " " .. userData.lastname
                         } or nil,
                         plate = vehicle.plate,
                         hash = json.decode(vehicle.vehicle).model,
@@ -143,4 +137,4 @@ data.getVehicleData = function(args, additionalColumns, callback)
     end)
 end
 
-return data
+return module

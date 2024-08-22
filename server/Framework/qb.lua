@@ -1,45 +1,45 @@
-local data = {}
-QBCore = exports['qb-core']:GetCoreObject()
+local module = {}
+QBCore = exports["qb-core"]:GetCoreObject()
 
 local function validatePlayer(player)
     if not player or not player.PlayerData or not player.PlayerData.source then
         local funcInfo = debug.getinfo(2, "nSl")
         local funcName = funcInfo.name or "unknown function"
-        DebugPrint(("Framework player is not valid in function '%s'"):format(funcName), 'error')
+        DebugPrint(("Framework player is not valid in function '%s'"):format(funcName), "error")
         return false
     end
     return true
 end
 
-data.getPlayerFromId = function(playerId)
+module.getPlayerFromId = function(playerId)
     if not CheckArgs(playerId) then return end
     local player = QBCore.Functions.GetPlayer(playerId)
     return player
 end
 
-data.getPlayerFromIdentifier = function(playerIdentifier)
+module.getPlayerFromIdentifier = function(playerIdentifier)
     if not CheckArgs(playerIdentifier) then return end
     local player = QBCore.Functions.GetPlayerByCitizenId(playerIdentifier)
     return player
 end
 
-data.getIdentifier = function(frPlayer)
+module.getIdentifier = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local identifier = frPlayer.PlayerData.citizenid
     return identifier
 end
 
-data.RegisterServerCallback = function(name, callback)
+module.RegisterServerCallback = function(name, callback)
     if not CheckArgs(name, callback) then return end
     QBCore.Functions.CreateCallback(name, callback)
 end
 
-data.getSource = function(frPlayer)
+module.getSource = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     return frPlayer.PlayerData.source
 end
 
-data.getName = function(frPlayer)
+module.getName = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local response = {
         fullName = frPlayer.PlayerData.name,
@@ -50,7 +50,7 @@ data.getName = function(frPlayer)
     return response
 end
 
-data.getJob = function(frPlayer)
+module.getJob = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local job = frPlayer.PlayerData.job
     local response = {
@@ -63,7 +63,7 @@ data.getJob = function(frPlayer)
     return response
 end
 
-data.getAllPlayers = function()
+module.getAllPlayers = function()
     local players = {}
     for _, playerId in pairs(QBCore.Functions.GetPlayers()) do
         table.insert(players, QBCore.Functions.GetPlayer(playerId))
@@ -71,18 +71,18 @@ data.getAllPlayers = function()
     return players
 end
 
-data.setJob = function(frPlayer, job, grade)
+module.setJob = function(frPlayer, job, grade)
     if not CheckArgs(frPlayer, job, grade) or not validatePlayer(frPlayer) then return end
     frPlayer.Functions.SetJob(job, grade)
 end
 
-data.doesJobExist = function(job, grade)
+module.doesJobExist = function(job, grade)
     if not CheckArgs(job, grade) then return end
     local jobs = QBCore.Shared.Jobs
     return jobs[job] and jobs[job].grades[tonumber(grade)] ~= nil
 end
 
-data.getCoords = function(frPlayer)
+module.getCoords = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local ped = GetPlayerPed(frPlayer.PlayerData.source)
     if not ped or ped == -1 then return end
@@ -90,7 +90,7 @@ data.getCoords = function(frPlayer)
     return vec3(coords.x, coords.y, coords.z)
 end
 
-data.getJobs = function()
+module.getJobs = function()
     local jobs = QBCore.Shared.Jobs
     local response = {}
 
@@ -115,4 +115,4 @@ data.getJobs = function()
     return response
 end
 
-return data
+return module

@@ -1,43 +1,43 @@
-local data = {}
-local QBCore = exports['qb-core']:GetCoreObject()
-local inventory = exports['qb-inventory']
+local module = {}
+local QBCore = exports["qb-core"]:GetCoreObject()
+local inventory = exports["qb-inventory"]
 
-data.openInventory = function(playerId, inventoryType, inventoryData)
+module.openInventory = function(playerId, inventoryType, inventoryData)
     if not CheckArgs(playerId, inventoryType, inventoryData) then return end
     return inventory:OpenInventory(playerId, inventoryType, inventoryData)
 end
 
-data.addItem = function(inventoryName, item, count, metadata)
+module.addItem = function(inventoryName, item, count, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
-    if item == 'money' then
+    if item == "money" then
         local Player = QBCore.Functions.GetPlayer(inventoryName)
         if Player then
-            Player.Functions.AddMoney('cash', count)
+            Player.Functions.AddMoney("cash", count)
             return true
         end
     else
-        local success = inventory:AddItem(inventoryName, item, count, false, metadata, 'scripted')
+        local success = inventory:AddItem(inventoryName, item, count, false, metadata, "scripted")
         return success
     end
 end
 
-data.removeItem = function(inventoryName, item, count, metadata)
+module.removeItem = function(inventoryName, item, count, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
-    if item == 'money' then
+    if item == "money" then
         local Player = QBCore.Functions.GetPlayer(inventoryName)
         if Player then
-            Player.Functions.RemoveMoney('cash', count)
+            Player.Functions.RemoveMoney("cash", count)
             return true
         end
     else
-        local success = inventory:RemoveItem(inventoryName, item, count, false, 'scripted')
+        local success = inventory:RemoveItem(inventoryName, item, count, false, "scripted")
         return success
     end
 end
 
-data.canCarryItem = function(inventoryName, item, count, metadata)
+module.canCarryItem = function(inventoryName, item, count, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
-    if item == 'money' then
+    if item == "money" then
         return true
     else
         local canCarry, reason = inventory:CanAddItem(inventoryName, item, count)
@@ -45,19 +45,19 @@ data.canCarryItem = function(inventoryName, item, count, metadata)
     end
 end
 
-data.getItemCount = function(inventoryName, item, metadata)
+module.getItemCount = function(inventoryName, item, metadata)
     if not CheckArgs(inventoryName, item) then return end
-    if item == 'money' then
+    if item == "money" then
         local Player = QBCore.Functions.GetPlayer(inventoryName)
         if Player then
-            return Player.Functions.GetMoney('cash')
+            return Player.Functions.GetMoney("cash")
         end
     else
         return inventory:GetItemCount(inventoryName, item)
     end
 end
 
-data.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight, stashOwner, stashGroups)
+module.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight, stashOwner, stashGroups)
     if not CheckArgs(stashName, stashLabel, stashSlots, stashMaxWeight) then return end
     inventory:CreateStash({
         name = stashName,
@@ -67,13 +67,13 @@ data.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight,
     })
 end
 
-data.setDurability = function(inventoryName, itemSlot, durability)
+module.setDurability = function(inventoryName, itemSlot, durability)
     if not CheckArgs(inventoryName, itemSlot, durability) then return end
     local item = inventory:GetItemBySlot(inventoryName, itemSlot)
     if item then
         item.info.durability = durability
-        inventory:SetItemData(inventoryName, item.name, 'info', item.info)
+        inventory:SetItemData(inventoryName, item.name, "info", item.info)
     end
 end
 
-return data
+return module

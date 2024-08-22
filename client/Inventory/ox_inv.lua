@@ -1,18 +1,18 @@
 local inventory = exports.ox_inventory
-local data = {}
+local module = {}
 
-data.openInventory = function(inventoryType, inventoryData)
-    if not CheckArgs(type, data) then return end
+module.openInventory = function(inventoryType, inventoryData)
+    if not CheckArgs(inventoryType, inventoryData) then return end
     inventory:openInventory(inventoryType, inventoryData)
 end
 
-data.getCurrentWeapon = function()
+module.getCurrentWeapon = function()
     return inventory:getCurrentWeapon()
 end
 
-data.getItemCount = function(itemName, metadata)
+module.getItemCount = function(itemName, metadata)
     if not CheckArgs(itemName) then return end
     return inventory:GetItemCount(itemName, metadata)
 end
 
-return data
+return module

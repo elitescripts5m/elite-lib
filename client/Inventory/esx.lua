@@ -1,13 +1,13 @@
-ESX = exports['es_extended']:getSharedObject()
-local data = {}
+ESX = exports["es_extended"]:getSharedObject()
+local module = {}
 
-data.openInventory = function(inventoryType, inventoryData)
+module.openInventory = function(inventoryType, inventoryData)
     if not CheckArgs(inventoryType, inventoryData) then return end
     --[[ NOT AVAILABLE ]]
     return false
 end
 
-data.getCurrentWeapon = function()
+module.getCurrentWeapon = function()
     local playerPed = PlayerPedId()
     local weaponHash = GetSelectedPedWeapon(playerPed)
     local weapon = nil
@@ -21,7 +21,7 @@ data.getCurrentWeapon = function()
     return weapon
 end
 
-data.getItemCount = function(itemName, metadata)
+module.getItemCount = function(itemName, metadata)
     if not CheckArgs(itemName) then return end
     local xPlayer = ESX.GetPlayerData()
     local count = 0
@@ -33,4 +33,4 @@ data.getItemCount = function(itemName, metadata)
     return count
 end
 
-return data
+return module

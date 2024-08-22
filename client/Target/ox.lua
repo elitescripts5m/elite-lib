@@ -1,17 +1,17 @@
 local oxtarget = exports.ox_target
-local data = {}
+local module = {}
 
-data.addEntityTarget = function(netIds, options)
+module.addEntityTarget = function(netIds, options)
     if not CheckArgs(netIds, options) then return end
     oxtarget:addEntity(netIds, options)
 end
 
-data.addCircleZone = function(circledata)
+module.addCircleZone = function(circledata)
     if not CheckArgs(circledata.coords, circledata.options) then return end
     oxtarget:addSphereZone(circledata)
 end
 
-data.addBoxZone = function(boxdata)
+module.addBoxZone = function(boxdata)
     if not CheckArgs(boxdata.coords, boxdata.size, boxdata.options) then return end
     oxtarget:addBoxZone({
         coords = boxdata.coords,
@@ -24,4 +24,4 @@ data.addBoxZone = function(boxdata)
     })
 end
 
-return data
+return module

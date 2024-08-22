@@ -1,46 +1,46 @@
-local data = {}
-ESX = exports['es_extended']:getSharedObject()
+local module = {}
+ESX = exports["es_extended"]:getSharedObject()
 
 local function validatePlayer(player)
     if not player or not player.source then
         local funcInfo = debug.getinfo(2, "nSl")
         local funcName = funcInfo.name or "unknown function"
-        DebugPrint(("Framework player is not valid in function '%s'"):format(funcName), 'error')
+        DebugPrint(("Framework player is not valid in function '%s'"):format(funcName), "error")
         return false
     end
     return true
 end
 
-data.getPlayerFromId = function(playerId)
+module.getPlayerFromId = function(playerId)
     if not CheckArgs(playerId) then return end
     local player = ESX.GetPlayerFromId(tonumber(playerId))
     return player
 end
 
-data.getPlayerFromIdentifier = function(playerIdentifier)
+module.getPlayerFromIdentifier = function(playerIdentifier)
     if not CheckArgs(playerIdentifier) then return end
     local player = ESX.GetPlayerFromIdentifier(playerIdentifier)
     return player
 end
 
-data.getIdentifier = function(frPlayer)
+module.getIdentifier = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local identifier = frPlayer.getIdentifier()
     return identifier
 end
 
-data.RegisterServerCallback = function(name, callback)
+module.RegisterServerCallback = function(name, callback)
     if not CheckArgs(name, callback) then return end
     return ESX.RegisterServerCallback(name, callback)
 end
 
-data.getSource = function(frPlayer)
+module.getSource = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local frsource = frPlayer.source
     return frsource
 end
 
-data.getName = function(frPlayer)
+module.getName = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local response = {
         fullName = frPlayer.getName(),
@@ -51,7 +51,7 @@ data.getName = function(frPlayer)
     return response
 end
 
-data.getJob = function(frPlayer)
+module.getJob = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local job = frPlayer.getJob()
     local response = {
@@ -65,21 +65,21 @@ data.getJob = function(frPlayer)
     return response
 end
 
-data.getAllPlayers = function()
+module.getAllPlayers = function()
     return ESX.GetExtendedPlayers()
 end
 
-data.setJob = function(frPlayer, job, grade)
+module.setJob = function(frPlayer, job, grade)
     if not CheckArgs(frPlayer, job, grade) or not validatePlayer(frPlayer) then return end
     frPlayer.setJob(job, grade)
 end
 
-data.doesJobExist = function(job, grade)
+module.doesJobExist = function(job, grade)
     if not CheckArgs(job, grade) then return end
     return ESX.DoesJobExist(job, grade)
 end
 
-data.getCoords = function(frPlayer)
+module.getCoords = function(frPlayer)
     if not CheckArgs(frPlayer) or not validatePlayer(frPlayer) then return end
     local ped = GetPlayerPed(frPlayer.source)
     if not ped or ped == -1 then return end
@@ -87,7 +87,7 @@ data.getCoords = function(frPlayer)
     return vec3(coords.x, coords.y, coords.z)
 end
 
-data.getJobs = function()
+module.getJobs = function()
     local jobs = ESX.GetJobs()
     local response = {}
 
@@ -112,4 +112,4 @@ data.getJobs = function()
     return response
 end
 
-return data
+return module
