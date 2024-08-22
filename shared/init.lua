@@ -1,10 +1,77 @@
-local resourceName = GetCurrentResourceName()
-if resourceName ~= "elite-bridge" then
-    return print(("Change resource name from %s to elite-bridge in order to use our resources!"):format(resourceName))
-end
-
-Elite = {
-    cache = {}
+Elite = { cache = {} }
+local LibConfig = {
+    Settings = {
+        Debug = false,
+        Framework = "auto", --[[
+            Options:
+                "auto",
+                "esx",
+                "qb",
+                "qbox"
+        ]]
+        Inventory = "auto", --[[
+            Options:
+                "auto",
+                "esx" (native),
+                "qb" (native),
+                "ox_inv",
+                "qb_inv"
+        ]]
+        Target = "auto", --[[
+            Options:
+                "auto",
+                "ox",
+                "qb"
+        ]]
+        Database = "auto" --[[
+            Options:
+                "auto",
+                "esx",
+                "qb",
+                "qbox"
+        ]]
+    },
+    Modules = {
+        Framework = {
+            client = {
+                ["es_extended"] = "esx.lua",
+                ["qb-core"] = "qb.lua",
+                ["qbx_core"] = "qbx.lua"
+            },
+            server = {
+                ["es_extended"] = "esx.lua",
+                ["qb-core"] = "qb.lua",
+                ["qbx_core"] = "qbx.lua"
+            },
+        },
+        Inventory = {
+            client = {
+                ["ox_inventory"] = "ox_inv.lua",
+                ["qb-inventory"] = "qb_inv.lua",
+                ["qb-core"] = "qb.lua",
+                ["es_extended"] = "esx.lua"
+            },
+            server = {
+                ["ox_inventory"] = "ox_inv.lua",
+                ["qb-inventory"] = "qb_inv.lua",
+                ["qb-core"] = "qb.lua",
+                ["es_extended"] = "esx.lua"
+            },
+        },
+        Target = {
+            client = {
+                ["ox_target"] = "ox.lua",
+                ["qb-target"] = "qb.lua"
+            }
+        },
+        Database = {
+            server = {
+                ["es_extended"] = "esx.lua",
+                ["qb-core"] = "qb.lua",
+                ["qbx_core"] = "qbx.lua"
+            }
+        }
+    }
 }
 local isServer = IsDuplicityVersion()
 local printtypes = {
@@ -14,9 +81,39 @@ local printtypes = {
 }
 
 function DebugPrint(message, type)
-    if not Config.Settings.Debug then return end
+    if not LibConfig.Settings.Debug then return end
     local prefix = printtypes[type] or printtypes["error"]
     print(prefix .. message)
+end
+
+local function updateCheck(resourceName)
+    -- local currentVersion = GetResourceMetadata(resourceName, "version")
+	-- if not currentVersion then return print(("^1Unable to determine current resource version for '%s' ^0"):format(resourceName)) end
+    -- PerformHttpRequest("API_LÄNK_HÄR", function(status, response)
+    --     if status ~= 200 then return end
+    --     local data = json.decode(response)
+    --     if currentVersion ~= data.tag_name then
+    --         print("^2[UPDATE] ^7An update for ^2"..resourceName.." (v"..data.tag_name..") ^7is available. Check out our discord (https://discord.gg/hM228ZYhbY) for changelogs.")
+    --     else
+    --         print("^4[INFO] ^7Resource ^2"..resourceName.." ("..currentVersion..") ^7has been started successfully.")
+    --     end
+    -- end, "GET")
+end
+
+local resourceName = GetCurrentResourceName()
+local isLib = GetResourceMetadata(resourceName, "isLib", 0)
+if isLib then
+    if resourceName ~= "elite-bridge" then
+        return print(("Change resource name from %s to elite-bridge in order to use our resources!"):format(resourceName))
+    else
+        if isServer then
+            updateCheck(resourceName)
+            print("^4[INFO] ^0"..resourceName.." started successfully.")
+        end
+    end
+elseif not isLib and isServer then
+    print("^4[INFO] ^0Resource "..resourceName.." started and paired with elite-bridge")
+    updateCheck(resourceName)
 end
 
 function CheckArgs(...)
@@ -27,7 +124,7 @@ function CheckArgs(...)
         local arg = select(i, ...)
         local argName = debug.getlocal(2, i)
         if arg == nil then
-            print(("^1[ERROR] ^0Missing required argument '%s' in %s"):format(argName or "unknown argument", funcName))
+            DebugPrint(("Missing required argument '%s' in %s"):format(argName or "unknown argument", funcName), "error")
             return false
         end
     end
@@ -80,9 +177,9 @@ local function setup()
         server = {}
     }
 
-    for name, setting in pairs(Config.Settings) do
+    for name, setting in pairs(LibConfig.Settings) do
         if setting == "auto" then
-            Config.Settings[name] = nil
+            LibConfig.Settings[name] = nil
             DebugPrint(("Auto-detecting %s modules"):format(name), "info")
         elseif setting then
             if name ~= "Debug" then
@@ -91,8 +188,8 @@ local function setup()
         end
     end
 
-    for name, module in pairs(Config.Modules) do
-        local setting = Config.Settings[name]
+    for name, module in pairs(LibConfig.Modules) do
+        local setting = LibConfig.Settings[name]
 
         if isServer and module.server then
             for framework, path in pairs(module.server) do

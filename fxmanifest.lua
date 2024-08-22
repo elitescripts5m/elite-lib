@@ -10,11 +10,13 @@ dependencies {
     "oxmysql"
 }
 
+server_script "@oxmysql/lib/MySQL.lua"
+
 files {
     "client/**/*.lua",
     "server/**/*.lua"
 }
 
-server_script "@oxmysql/lib/MySQL.lua"
-shared_script "shared/*.lua"
+shared_script "shared/init.lua"
+isLib "true"
 lua54 "yes"
