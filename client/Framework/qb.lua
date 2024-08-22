@@ -40,7 +40,7 @@ module.TriggerServerCallback = function(name, cb, ...)
 end
 
 module.getSex = function()
-    local ped = PlayerPedId()
+    local ped = Elite.cache.ped
     local pedModel = GetEntityModel(ped)
     local charinfo = QBCore.Functions.GetPlayerData().charinfo
     local sex
