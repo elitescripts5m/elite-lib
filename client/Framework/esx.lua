@@ -1,30 +1,30 @@
-ESX = exports['es_extended']:getSharedObject()
-local data = {}
+ESX = exports["es_extended"]:getSharedObject()
+local module = {}
 
-data.getName = function()
+module.getName = function()
     local playerdata = ESX.GetPlayerData()
     if not playerdata?.firstName then
         return {
-            fullName = '',
-            firstName = '',
-            lastName = ''
+            fullName = "",
+            firstName = "",
+            lastName = ""
         }
     end
     return {
-        fullName = playerdata.firstName .. ' ' .. playerdata.lastName,
+        fullName = playerdata.firstName .. " " .. playerdata.lastName,
         firstName = playerdata.firstName,
         lastName = playerdata.lastName
     }
 end
 
-data.getJob = function()
+module.getJob = function()
     local playerdata = ESX.GetPlayerData()
     if not playerdata?.job then
         return {
-            name = '',
-            label = '',
+            name = "",
+            label = "",
             grade = 0,
-            grade_label = ''
+            grade_label = ""
         }
     end
     return {
@@ -35,13 +35,22 @@ data.getJob = function()
     }
 end
 
-data.TriggerServerCallback = function(name, cb, ...)
+module.TriggerServerCallback = function(name, cb, ...)
     ESX.TriggerServerCallback(name, cb, ...)
 end
 
-data.getSex = function()
+module.getSex = function()
+    local ped = PlayerPedId()
+    local pedModel = GetEntityModel(ped)
     local playerdata = ESX.GetPlayerData()
-    return playerdata?.sex and (playerdata.sex == "m" and "male" or "female") or "male"
+    local sex
+    if pedModel == `mp_m_freemode_01` or pedModel == `mp_f_freemode_01` then
+        sex = playerdata?.sex and (playerdata.sex == "m" and "male" or "female") or "male"
+    else
+        sex = IsPedMale(ped) and "male" or "female"
+    end
+
+    return sex
 end
 
-return data
+return module

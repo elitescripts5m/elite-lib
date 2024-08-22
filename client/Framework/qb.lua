@@ -1,30 +1,30 @@
-QBCore = exports['qb-core']:GetCoreObject()
-local data = {}
+QBCore = exports["qb-core"]:GetCoreObject()
+local module = {}
 
-data.getName = function ()
+module.getName = function ()
     local charinfo = QBCore.Functions.GetPlayerData().charinfo
     if not charinfo then
         return {
-            fullName = '',
-            firstName = '',
-            lastName = ''
+            fullName = "",
+            firstName = "",
+            lastName = ""
         }
     end
     return {
-        fullName = charinfo.firstname .. ' ' .. charinfo.lastname,
+        fullName = charinfo.firstname .. " " .. charinfo.lastname,
         firstName = charinfo.firstname,
         lastName = charinfo.lastname
     }
 end
 
-data.getJob = function()
+module.getJob = function()
     local job = QBCore.Functions.GetPlayerData().job
     if not job then
         return {
-            name = '',
-            label = '',
+            name = "",
+            label = "",
             grade = 0,
-            grade_label = ''
+            grade_label = ""
         }
     end
     return {
@@ -35,13 +35,22 @@ data.getJob = function()
     }
 end
 
-data.TriggerServerCallback = function(name, cb, ...)
+module.TriggerServerCallback = function(name, cb, ...)
     QBCore.Functions.TriggerCallback(name, cb, ...)
 end
 
-data.getSex = function()
+module.getSex = function()
+    local ped = PlayerPedId()
+    local pedModel = GetEntityModel(ped)
     local charinfo = QBCore.Functions.GetPlayerData().charinfo
-    return charinfo and (charinfo.gender == 1 and "male" or "female") or "male"
+    local sex
+    if pedModel == `mp_m_freemode_01` or pedModel == `mp_f_freemode_01` then
+        sex = (charinfo.gender == 1 and "male" or "female") or "male"
+    else
+        sex = IsPedMale(ped) and "male" or "female"
+    end
+
+    return sex
 end
 
-return data
+return module
