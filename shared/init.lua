@@ -105,8 +105,8 @@ end
 local resourceName = GetCurrentResourceName()
 local isLib = GetResourceMetadata(resourceName, "isLib", 0)
 if isLib then
-    if resourceName ~= "elite-bridge" then
-        return print(("Change resource name from %s to elite-bridge in order to use our resources!"):format(resourceName))
+    if resourceName ~= "elite-lib" then
+        return print(("Change resource name from %s to elite-lib in order to use our resources!"):format(resourceName))
     else
         if isServer then
             updateCheck(resourceName)
@@ -114,7 +114,7 @@ if isLib then
         end
     end
 elseif not isLib and isServer then
-    print("^4[INFO] ^0Resource "..resourceName.." started and paired with elite-bridge")
+    print("^4[INFO] ^0Resource "..resourceName.." started and paired with elite-lib")
     updateCheck(resourceName)
 end
 
@@ -151,7 +151,7 @@ function RemoveCache(key)
 end
 
 local function loadBridgeModule(modulePath)
-    local file = LoadResourceFile("elite-bridge", modulePath)
+    local file = LoadResourceFile("elite-lib", modulePath)
     if not file then
         DebugPrint(("Failed to load module %s: File not found"):format(modulePath), "error")
         return nil

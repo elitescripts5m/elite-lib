@@ -1,6 +1,6 @@
 fx_version "cerulean"
 game "gta5"
-name "Elite Bridge"
+name "Elite Lib"
 author "Elite Scripts"
 version "1.0.0"
 
