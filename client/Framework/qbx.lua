@@ -54,4 +54,8 @@ module.getSex = function()
     return sex
 end
 
+module.notify = function(message, type, time)
+    qbx:Notify(message, type, time)
+end
+
 return module

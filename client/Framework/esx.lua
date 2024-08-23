@@ -53,4 +53,8 @@ module.getSex = function()
     return sex
 end
 
+module.notify = function(message, type, time)
+    ESX.ShowNotification(message, type, time)
+end
+
 return module

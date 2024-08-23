@@ -129,4 +129,11 @@ module.setMetadata = function(playerId, index, value)
     return false
 end
 
+module.notify = function(playerId, message, type, time)
+    -- "type" & "time" is not used by ESX by default. Feel free to add them if you are planning to use any other notification resource which includes them.
+    if not CheckArgs(playerId, message) then return end
+    local player = ESX.GetPlayerFromId(tonumber(playerId))
+    player.showNotification(message)
+end
+
 return module

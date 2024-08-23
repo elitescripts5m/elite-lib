@@ -1,7 +1,7 @@
 QBCore = exports["qb-core"]:GetCoreObject()
 local module = {}
 
-module.getName = function ()
+module.getName = function()
     local charinfo = QBCore.Functions.GetPlayerData().charinfo
     if not charinfo then
         return {
@@ -51,6 +51,10 @@ module.getSex = function()
     end
 
     return sex
+end
+
+module.notify = function(message, type, time)
+    QBCore.Functions.Notify(message, type, time)
 end
 
 return module

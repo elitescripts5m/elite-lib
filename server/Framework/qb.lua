@@ -130,4 +130,9 @@ module.setMetadata = function(playerId, index, value)
     end
 end
 
+module.notify = function(playerId, message, type, time)
+    if not CheckArgs(playerId, message) then return end
+    TriggerClientEvent("QBCore:Notify", playerId, message, type or nil, time or nil)
+end
+
 return module
