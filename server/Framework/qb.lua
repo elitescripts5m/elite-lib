@@ -115,4 +115,19 @@ module.getJobs = function()
     return response
 end
 
+module.getMetadata = function(playerId, index)
+    if not CheckArgs(playerId, index) then return end
+    local player = QBCore.Functions.GetPlayer(playerId)
+    if not player then return nil end
+    return player.PlayerData.metadata[index] or nil
+end
+
+module.setMetadata = function(playerId, index, value)
+    if not CheckArgs(playerId, index, value) then return end
+    local player = QBCore.Functions.GetPlayer(playerId)
+    if player then
+        player.Functions.SetMetaData(index, value)
+    end
+end
+
 return module

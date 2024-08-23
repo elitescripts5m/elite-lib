@@ -112,4 +112,21 @@ module.getJobs = function()
     return response
 end
 
+module.getMetadata = function(playerId, index)
+    if not CheckArgs(playerId, index) then return end
+    local player = ESX.GetPlayerFromId(tonumber(playerId))
+    if not player then return nil end
+    return player.getMeta(index) or nil
+end
+
+module.setMetadata = function(playerId, index, value)
+    if not CheckArgs(playerId, index, value) then return end
+    local player = ESX.GetPlayerFromId(tonumber(playerId))
+    if player then
+        player.setMeta(index, value)
+        return true
+    end
+    return false
+end
+
 return module
