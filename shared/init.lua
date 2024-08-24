@@ -18,10 +18,10 @@ local LibConfig = {
         Inventory = "auto", --[[
             Options:
                 "auto",
-                "esx" (native),
-                "qb" (native),
-                "ox_inv",
-                "qb_inv",
+                "esx" (native, not recommended),
+                "qb" (native, not recommended),
+                "ox_inventory",
+                "qb-inventory",
                 "custom"
         ]]
         Target = "auto", --[[
@@ -58,15 +58,15 @@ local LibConfig = {
         },
         Inventory = {
             client = {
-                ["ox_inventory"] = "ox_inv.lua",
-                ["qb-inventory"] = "qb_inv.lua",
+                ["ox_inventory"] = "ox_inventory.lua",
+                ["qb-inventory"] = "qb-inventory.lua",
                 ["qb-core"] = "qb.lua",
                 ["es_extended"] = "esx.lua",
                 ["custom"] = "custom.lua"
             },
             server = {
-                ["ox_inventory"] = "ox_inv.lua",
-                ["qb-inventory"] = "qb_inv.lua",
+                ["ox_inventory"] = "ox_inventory.lua",
+                ["qb-inventory"] = "qb-inventory.lua",
                 ["qb-core"] = "qb.lua",
                 ["es_extended"] = "esx.lua",
                 ["custom"] = "custom.lua"

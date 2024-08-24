@@ -3,6 +3,7 @@ local QBCore = exports["qb-core"]:GetCoreObject()
 
 module.openInventory = function(playerId, inventoryType, inventoryData)
     --[[ NOT AVAILABLE ]]
+    print("The function for 'openInventory' does not exist in qb-core. Use either qb-inventory, ox_inventory or any other option in elite-lib.")
     return false
 end
 
@@ -35,8 +36,16 @@ module.removeItem = function(inventoryName, item, count, metadata)
 end
 
 module.canCarryItem = function(inventoryName, item, count, metadata)
-    --[[ NOT AVAILABLE ]]
-    return true
+    if GetResourceState("qb-inventory") == "missing" then
+        return true
+    else
+        if item == "money" then
+            return true
+        else
+            local canCarry, reason = exports["qb-inventory"]:CanAddItem(inventoryName, item, count)
+            return canCarry
+        end
+    end
 end
 
 module.getItemCount = function(inventoryName, item, metadata)
@@ -54,6 +63,7 @@ end
 
 module.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight, stashOwner, stashGroups)
     --[[ NOT AVAILABLE ]]
+    print("The function for 'registerStash' does not exist in qb-core. Use either qb-inventory, ox_inventory or any other option in elite-lib.")
     return false
 end
 

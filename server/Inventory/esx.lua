@@ -3,6 +3,7 @@ ESX = exports["es_extended"]:getSharedObject()
 
 module.openInventory = function(playerId, inventoryType, inventoryData)
     --[[ NOT AVAILABLE ]]
+    print("The function for 'openInventory' does not exist in ESX. Use either ox_inventory or any other option in elite-lib.")
     return false
 end
 
@@ -37,8 +38,8 @@ module.removeItem = function(inventoryName, item, count, metadata)
 end
 
 module.canCarryItem = function(inventoryName, item, count, metadata)
-    --[[ NOT AVAILABLE ]]
-    return true
+    local xPlayer = ESX.GetPlayerFromId(inventoryName)
+    return xPlayer.canCarryItem(item, count)
 end
 
 module.getItemCount = function(inventoryName, item, metadata)
@@ -56,6 +57,8 @@ module.getItemCount = function(inventoryName, item, metadata)
 end
 
 module.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight, stashOwner, stashGroups)
+    --[[ NOT AVAILABLE ]]
+    print("The function for 'registerStash' does not exist in ESX. Use either ox_inventory or any other option in elite-lib.")
     return false
 end
 
