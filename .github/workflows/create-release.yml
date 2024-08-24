@@ -14,9 +14,5 @@ jobs:
       - name: Set the tag to env variable.
         run: |
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: List the workspace for now.
-        run: |
-          ls ${{ github.workspace }}
-      - name: List the current directory.
-        run: |
-          pwd
+      - name: Echo the release version.
+        run: echo "The release version is ${{ env.RELEASE_VERSION }}"
