@@ -25,5 +25,10 @@ jobs:
       - name: Modify the release version in the script.
         run: |
           sed -i 's/version "[0-9]\+\.[0-9]\+\.[0-9]\+"/version "${{ env.RELEASE_VERSION }}"/' fxmanifest.lua
-      - name: Print the modified script.
-        run: cat fxmanifest.lua
+      - name: Exit current work directory.
+        run: cd ..
+      - uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r ${{ github.repository }}.zip ${{ github.repository }}
+      - name: List files in the current directory.
+        run: ls
