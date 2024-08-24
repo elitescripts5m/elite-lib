@@ -24,4 +24,8 @@ module.getItemCount = function(itemName, metadata)
     return inventory:GetItemCount(itemName)
 end
 
+module.getItemLabel = function(itemName)
+    return QBCore.Shared.Items[itemName].label or "Unknown"
+end
+
 return module

@@ -33,4 +33,8 @@ module.getItemCount = function(itemName, metadata)
     return count
 end
 
+module.getItemLabel = function(itemName)
+    return ESX.GetItemLabel(itemName) or "Unknown"
+end
+
 return module
