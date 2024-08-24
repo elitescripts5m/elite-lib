@@ -105,8 +105,7 @@ module.getJobs = function()
                 label = gradeData.label
             }
         end
-
-        table.insert(response, jobInfo)
+        response[#response + 1] = jobInfo
     end
 
     return response

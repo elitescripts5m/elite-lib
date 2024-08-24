@@ -5,13 +5,13 @@ module.addEntityTarget = function(netIds, options)
     if not CheckArgs(netIds, options) then return end
     local formattedOptions = {}
     for _, option in pairs(options) do
-        table.insert(formattedOptions, {
+        formattedOptions[#formattedOptions + 1] = {
             icon = option.icon,
             label = option.label,
             action = option.onSelect,
             job = option.groups,
             distance = option.distance
-        })
+        }
     end
     qbtarget:AddTargetEntity(netIds, { options = formattedOptions, distance = 2.0 })
 end
@@ -22,13 +22,13 @@ module.addCircleZone = function(circledata)
     local radius = circledata.radius or 1.5
     local formattedOptions = {}
     for _, option in pairs(circledata.options) do
-        table.insert(formattedOptions, {
+        formattedOptions[#formattedOptions + 1] = {
             icon = option.icon,
             label = option.label,
             action = option.onSelect,
             job = option.groups,
             distance = option.distance
-        })
+        }
     end
     qbtarget:AddCircleZone(name, circledata.coords, radius, { name = name, debugPoly = circledata.debugPoly or false }, {
         options = formattedOptions,
@@ -44,13 +44,13 @@ module.addBoxZone = function(boxdata)
     local heading = boxdata.heading or 0.0
     local formattedOptions = {}
     for _, option in pairs(boxdata.options) do
-        table.insert(formattedOptions, {
+        formattedOptions[#formattedOptions + 1] = {
             icon = option.icon,
             label = option.label,
             action = option.onSelect,
             job = option.groups,
             distance = option.distance
-        })
+        }
     end
     qbtarget:AddBoxZone(name, boxdata.coords, length, width, { name = name, heading = heading, debugPoly = boxdata.debugPoly or false, minZ = boxdata.minZ or boxdata.coords.z - 1, maxZ = boxdata.maxZ or boxdata.coords.z + 1 }, {
         options = formattedOptions,

@@ -225,7 +225,7 @@ local function setup()
                 ::continue::
             end
             if not loadedModules.server[name] and name ~= "Target" then
-                table.insert(missingCategories, name)
+                missingCategories[#missingCategories + 1] = name
             end
         elseif not isServer and module.client then
             for framework, path in pairs(module.client) do

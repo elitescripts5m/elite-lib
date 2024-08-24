@@ -27,19 +27,19 @@ module.getUserData = function(args, additionalColumns, callback)
     local conditions = {}
 
     for _, col in ipairs(baseColumns) do
-        table.insert(validColumns, col)
+        validColumns[#validColumns + 1] = col
     end
 
     if additionalColumns then
         for _, col in ipairs(additionalColumns) do
-            table.insert(validColumns, col)
+            validColumns[#validColumns + 1] = col
         end
     end
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
         if userColumns and userColumns[col:gsub("`", "")] then
-            table.insert(foundColumns, col)
+            foundColumns[#foundColumns + 1] = col
         end
     end
 
@@ -49,9 +49,9 @@ module.getUserData = function(args, additionalColumns, callback)
     for k, v in pairs(args) do
         local columnName = k
         if v:find("%%") then
-            table.insert(conditions, columnName .. " LIKE @" .. k)
+            conditions[#conditions + 1] = columnName .. " LIKE @" .. k
         else
-            table.insert(conditions, columnName .. " = @" .. k)
+            conditions[#conditions + 1] = columnName .. " = @" .. k
         end
         params["@" .. k] = v
     end
@@ -81,24 +81,24 @@ module.getVehicleData = function(args, additionalColumns, callback)
     local conditions = {}
 
     for _, col in ipairs(baseColumns) do
-        table.insert(validColumns, col)
+        validColumns[#validColumns + 1] = col
     end
 
     if additionalColumns then
         for _, col in ipairs(additionalColumns) do
-            table.insert(validColumns, col)
+            validColumns[#validColumns + 1] = col
         end
     end
 
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
         if vehicleColumns and vehicleColumns[col:gsub("`", "")] then
-            table.insert(foundColumns, col)
+            foundColumns[#foundColumns + 1] = col
         end
     end
 
     for k, v in pairs(args) do
-        table.insert(conditions, k .. " = @" .. k)
+        foundColumns[#foundColumns + 1] = k .. " = @" .. k
         params["@" .. k] = v
     end
 
@@ -124,7 +124,7 @@ module.getVehicleData = function(args, additionalColumns, callback)
                     for _, col in ipairs(additionalColumns or {}) do
                         vehicleData[col] = vehicle[col]
                     end
-                    table.insert(vehicles, vehicleData)
+                    vehicles[#vehicles + 1] = vehicleData
                     remaining = remaining - 1
                     if remaining == 0 then
                         callback(vehicles)

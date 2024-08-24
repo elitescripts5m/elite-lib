@@ -27,18 +27,18 @@ module.getUserData = function(args, additionalColumns, callback)
     local conditions = {}
 
     for _, col in ipairs(baseColumns) do
-        table.insert(validColumns, col)
+        validColumns[#validColumns + 1] = col
     end
 
     if additionalColumns then
         for key, value in pairs(additionalColumns) do
             if type(value) == "table" then
-                table.insert(validColumns, key)
+                validColumns[#validColumns + 1] = key
             elseif type(value) == "string" and value:find(" as ") then
                 local col, alias = value:match("^(.-) as (.+)$")
-                table.insert(validColumns, col)
+                validColumns[#validColumns + 1] = col
             else
-                table.insert(validColumns, value)
+                validColumns[#validColumns + 1] = value
             end
         end
     end
@@ -46,7 +46,7 @@ module.getUserData = function(args, additionalColumns, callback)
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
         if playerColumns and playerColumns[col:gsub("`", "")] then
-            table.insert(foundColumns, col)
+            foundColumns[#foundColumns + 1] = col
         end
     end
 
@@ -56,9 +56,9 @@ module.getUserData = function(args, additionalColumns, callback)
     for k, v in pairs(args) do
         local columnName = k == "identifier" and "citizenid" or k
         if v:find("%%") then
-            table.insert(conditions, columnName .. " LIKE @" .. k)
+            conditions[#conditions + 1] = columnName .. " LIKE @" .. k
         else
-            table.insert(conditions, columnName .. " = @" .. k)
+            conditions[#conditions + 1] = columnName .. " = @" .. k
         end
         params["@" .. k] = v
     end
@@ -119,18 +119,18 @@ module.getVehicleData = function(args, additionalColumns, callback)
     local conditions = {}
 
     for _, col in ipairs(baseColumns) do
-        table.insert(validColumns, col)
+        validColumns[#validColumns + 1] = col
     end
 
     if additionalColumns then
         for key, value in pairs(additionalColumns) do
             if type(value) == "table" then
-                table.insert(validColumns, key)
+                validColumns[#validColumns + 1] = key
             elseif type(value) == "string" and value:find(" as ") then
                 local col, alias = value:match("^(.-) as (.+)$")
-                table.insert(validColumns, col)
+                validColumns[#validColumns + 1] = col
             else
-                table.insert(validColumns, value)
+                validColumns[#validColumns + 1] = value
             end
         end
     end
@@ -138,15 +138,15 @@ module.getVehicleData = function(args, additionalColumns, callback)
     local foundColumns = {}
     for _, col in ipairs(validColumns) do
         if vehicleColumns and vehicleColumns[col:gsub("`", "")] then
-            table.insert(foundColumns, col)
+            foundColumns[#foundColumns + 1] = col
         end
     end
 
     for k, v in pairs(args) do
         if k == "owner" then
-            table.insert(conditions, "citizenid = @" .. k)
+            conditions[#conditions + 1] = "citizenid = @" .. k
         else
-            table.insert(conditions, k .. " = @" .. k)
+            conditions[#conditions + 1] = k .. " = @" .. k
         end
         params["@" .. k] = v
     end
@@ -197,7 +197,7 @@ module.getVehicleData = function(args, additionalColumns, callback)
                         end
                     end
 
-                    table.insert(vehicles, vehicleData)
+                    vehicles[#vehicles + 1] = vehicleData
                     remaining = remaining - 1
                     if remaining == 0 then
                         callback(vehicles)

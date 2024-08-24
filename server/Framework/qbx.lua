@@ -105,7 +105,7 @@ module.getJobs = function()
             }
         end
 
-        table.insert(response, jobInfo)
+        response[#response + 1] = jobInfo
     end
 
     return response

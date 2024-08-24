@@ -66,7 +66,7 @@ end
 module.getAllPlayers = function()
     local players = {}
     for _, playerId in pairs(QBCore.Functions.GetPlayers()) do
-        table.insert(players, QBCore.Functions.GetPlayer(playerId))
+        players[#players + 1] = QBCore.Functions.GetPlayer(playerId)
     end
     return players
 end
@@ -109,7 +109,7 @@ module.getJobs = function()
             }
         end
 
-        table.insert(response, jobInfo)
+        response[#response + 1] = jobInfo
     end
 
     return response
