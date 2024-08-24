@@ -12,7 +12,8 @@ local LibConfig = {
                 "auto",
                 "esx",
                 "qb",
-                "qbox"
+                "qbox",
+                "custom"
         ]]
         Inventory = "auto", --[[
             Options:
@@ -20,20 +21,23 @@ local LibConfig = {
                 "esx" (native),
                 "qb" (native),
                 "ox_inv",
-                "qb_inv"
+                "qb_inv",
+                "custom"
         ]]
         Target = "auto", --[[
             Options:
                 "auto",
                 "ox",
-                "qb"
+                "qb",
+                "custom"
         ]]
         Database = "auto", --[[
             Options:
                 "auto",
                 "esx",
                 "qb",
-                "qbox"
+                "qbox",
+                "custom"
         ]]
         Utils = "utils" -- Don"t change this!
     },
@@ -42,12 +46,14 @@ local LibConfig = {
             client = {
                 ["es_extended"] = "esx.lua",
                 ["qb-core"] = "qb.lua",
-                ["qbx_core"] = "qbx.lua"
+                ["qbx_core"] = "qbx.lua",
+                ["custom"] = "custom.lua"
             },
             server = {
                 ["es_extended"] = "esx.lua",
                 ["qb-core"] = "qb.lua",
-                ["qbx_core"] = "qbx.lua"
+                ["qbx_core"] = "qbx.lua",
+                ["custom"] = "custom.lua"
             },
         },
         Inventory = {
@@ -55,26 +61,30 @@ local LibConfig = {
                 ["ox_inventory"] = "ox_inv.lua",
                 ["qb-inventory"] = "qb_inv.lua",
                 ["qb-core"] = "qb.lua",
-                ["es_extended"] = "esx.lua"
+                ["es_extended"] = "esx.lua",
+                ["custom"] = "custom.lua"
             },
             server = {
                 ["ox_inventory"] = "ox_inv.lua",
                 ["qb-inventory"] = "qb_inv.lua",
                 ["qb-core"] = "qb.lua",
-                ["es_extended"] = "esx.lua"
+                ["es_extended"] = "esx.lua",
+                ["custom"] = "custom.lua"
             },
         },
         Target = {
             client = {
                 ["ox_target"] = "ox.lua",
-                ["qb-target"] = "qb.lua"
+                ["qb-target"] = "qb.lua",
+                ["custom"] = "custom.lua"
             }
         },
         Database = {
             server = {
                 ["es_extended"] = "esx.lua",
                 ["qb-core"] = "qb.lua",
-                ["qbx_core"] = "qbx.lua"
+                ["qbx_core"] = "qbx.lua",
+                ["custom"] = "custom.lua"
             }
         },
         Utils = {
@@ -217,7 +227,7 @@ local function setup()
             for framework, path in pairs(module.server) do
                 if loadedModules.server[name] then break end
                 if setting and framework ~= setting then goto continue end
-                if framework == "utils" or GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
+                if framework == "utils" or framework == "custom" or GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
                     local data = loadBridgeModule("server/" .. name .. "/" .. path)
                     if data then
                         for funcName, func in pairs(data) do Elite[funcName] = func end
@@ -244,8 +254,8 @@ local function setup()
                         return
                     end
                     if setting and framework ~= setting then return end
-                    while GetResourceState(framework) == "starting" and framework ~= "utils" do Wait(100) end
-                    if framework == "utils" or GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
+                    while GetResourceState(framework) == "starting" and framework ~= "utils" and framework ~= "custom" do Wait(100) end
+                    if framework == "utils" or framework == "custom" or GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
                         local data = loadBridgeModule("client/" .. name .. "/" .. path)
                         if data then
                             for funcName, func in pairs(data) do Elite[funcName] = func end
