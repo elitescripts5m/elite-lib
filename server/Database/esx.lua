@@ -2,24 +2,22 @@ local module = {}
 local userColumns = nil
 local vehicleColumns = nil
 
-CreateThread(function()
-    MySQL.Async.fetchAll("SHOW COLUMNS FROM owned_vehicles", {}, function(columnsResult)
-        vehicleColumns = {}
-        for _, column in ipairs(columnsResult) do
-            vehicleColumns[column.Field] = true
-        end
-    end)
-    MySQL.Async.fetchAll("SHOW COLUMNS FROM users", {}, function(columnsResult)
-        userColumns = {}
-        for _, column in ipairs(columnsResult) do
-            userColumns[column.Field] = true
-        end
-    end)
-end)
-
 module.getUserData = function(args, additionalColumns, callback)
     if not CheckArgs(args, callback) then return end
-    if not userColumns then return end
+    if userColumns == nil then
+        MySQL.Async.fetchAll("SHOW COLUMNS FROM users", {}, function(columnsResult)
+            userColumns = {}
+            for _, column in ipairs(columnsResult) do
+                userColumns[column.Field] = true
+            end
+            if not userColumns then
+                userColumns = false
+            end
+        end)
+    end
+    if not userColumns then
+        return callback(nil)
+    end
 
     local baseColumns = { "firstname", "lastname", "sex", "dob", "identifier" }
     local validColumns = {}
@@ -73,7 +71,21 @@ end
 
 module.getVehicleData = function(args, additionalColumns, callback)
     if not CheckArgs(args, callback) then return end
-    if not vehicleColumns then return callback({}) end
+    if vehicleColumns == nil then
+        MySQL.Async.fetchAll("SHOW COLUMNS FROM owned_vehicles", {}, function(columnsResult)
+            vehicleColumns = {}
+            for _, column in ipairs(columnsResult) do
+                vehicleColumns[column.Field] = true
+            end
+            if not vehicleColumns then
+                vehicleColumns = false
+                return callback({})
+            end
+        end)
+    end
+    if not vehicleColumns then
+        return callback({})
+    end
 
     local baseColumns = { "owner", "plate", "vehicle", "stored" }
     local validColumns = {}
