@@ -230,8 +230,8 @@ local function setup()
                         return
                     end
                     if setting and framework ~= setting then return end
-                    while GetResourceState(framework) == "starting" do Wait(100) end
-                    if GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
+                    while GetResourceState(framework) == "starting" and framework ~= "utils" do Wait(100) end
+                    if framework == "utils" or GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
                         local data = loadBridgeModule("client/" .. name .. "/" .. path)
                         if data then
                             for funcName, func in pairs(data) do Elite[funcName] = func end
