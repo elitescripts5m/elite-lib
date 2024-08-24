@@ -75,6 +75,9 @@ local LibConfig = {
         Utils = {
             client = {
                 ["utils"] = "utils.lua"
+            },
+            server = {
+                ["utils"] = "utils.lua"
             }
         }
     }
@@ -137,6 +140,12 @@ function CheckArgs(...)
         end
     end
     return true
+end
+
+if isServer and isLib then
+    RegisterServerEvent("elite-lib:server:utils:debugger", function(table, indent)
+        Elite.debugger(table, indent)
+    end)
 end
 
 function AddCache(key, value)
@@ -203,7 +212,7 @@ local function setup()
             for framework, path in pairs(module.server) do
                 if loadedModules.server[name] then break end
                 if setting and framework ~= setting then goto continue end
-                if GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
+                if framework == "utils" or GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
                     local data = loadBridgeModule("server/" .. name .. "/" .. path)
                     if data then
                         for funcName, func in pairs(data) do Elite[funcName] = func end

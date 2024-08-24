@@ -97,7 +97,11 @@ module.createBlip = function(data)
     return blip
 end
 
-AddEventHandler("onResourceStop", function(resource) -- Not sure if this is working correctly. Has to be looked at.
+module.debugger = function(table, indent)
+    TriggerServerEvent("elite-lib:server:utils:debugger", table, indent)
+end
+
+AddEventHandler("onResourceStop", function(resource)
     if resource ~= GetCurrentResourceName() then return end
 	for i = 1, #peds do
         DeletePed(peds[i])
