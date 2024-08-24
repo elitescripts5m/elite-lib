@@ -27,8 +27,10 @@ jobs:
           sed -i 's/version "[0-9]\+\.[0-9]\+\.[0-9]\+"/version "${{ env.RELEASE_VERSION }}"/' fxmanifest.lua
       - name: Exit current work directory.
         run: cd ..
+      - name: Echo repo name
+        run: echo ${{ github.event.repository.name }}
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r ${{ github.event.repository.name }}.zip ${{ github.event.repository.name }}
+          args: zip -qq -r ${{ github.event.repository.name }}.zip . -i ${{ github.event.repository.name }}
       - name: List files in the current directory.
         run: ls
