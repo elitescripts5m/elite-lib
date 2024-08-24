@@ -21,6 +21,10 @@ module.getCurrentWeapon = function()
     return weapon
 end
 
+module.getInventory = function()
+    return ESX.PlayerData.inventory
+end
+
 module.getItemCount = function(itemName, metadata)
     if not CheckArgs(itemName) then return end
     local xPlayer = ESX.GetPlayerData()

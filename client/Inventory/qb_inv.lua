@@ -6,11 +6,15 @@ module.openInventory = function(inventoryType, inventoryData)
     inventory:OpenInventory(inventoryType, inventoryData)
 end
 
+module.getInventory = function()
+    return QBCore.Functions.GetPlayerData().items
+end
+
 module.getCurrentWeapon = function()
     local playerPed = PlayerPedId()
     local weaponHash = GetSelectedPedWeapon(playerPed)
     local weapon = nil
-    for _, item in pairs(QBCore.Functions.GetPlayerData().items) do
+    for _, item in pairs(module.getInventory()) do
         if item.name == weaponHash then
             weapon = item
             break
