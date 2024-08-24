@@ -23,13 +23,14 @@ local LibConfig = {
                 "ox",
                 "qb"
         ]]
-        Database = "auto" --[[
+        Database = "auto", --[[
             Options:
                 "auto",
                 "esx",
                 "qb",
                 "qbox"
         ]]
+        Utils = "utils" -- Don't change this!
     },
     Modules = {
         Framework = {
@@ -69,6 +70,11 @@ local LibConfig = {
                 ["es_extended"] = "esx.lua",
                 ["qb-core"] = "qb.lua",
                 ["qbx_core"] = "qbx.lua"
+            }
+        },
+        Utils = {
+            client = {
+                ["utils"] = "utils.lua"
             }
         }
     }
