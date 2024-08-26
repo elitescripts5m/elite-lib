@@ -12,9 +12,9 @@ module.addItem = function(inventoryName, item, count, metadata)
     return success
 end
 
-module.removeItem = function(inventoryName, item, count, metadata)
+module.removeItem = function(inventoryName, item, count, slot, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
-    local success = inventory:RemoveItem(inventoryName, item, count)
+    local success = inventory:RemoveItem(inventoryName, item, count, slot, metadata)
     return success
 end
 

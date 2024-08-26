@@ -21,8 +21,12 @@ module.addItem = function(inventoryName, item, count, metadata)
     return false
 end
 
-module.removeItem = function(inventoryName, item, count, metadata)
+module.removeItem = function(inventoryName, item, count, slot, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
+    if metadata then
+        print("qb-core does not support metadata with their native functions. Please, change your inventory settings to 'qb-inventory' or something else that supports metadata.")
+        return false
+    end
     local Player = QBCore.Functions.GetPlayer(inventoryName)
     if Player then
         if item == "money" then
@@ -36,6 +40,10 @@ module.removeItem = function(inventoryName, item, count, metadata)
 end
 
 module.canCarryItem = function(inventoryName, item, count, metadata)
+    if metadata then
+        print("qb-core does not support metadata with their native functions. Please, change your inventory settings to 'qb-inventory' or something else that supports metadata.")
+        return false
+    end
     if GetResourceState("qb-inventory") == "missing" then
         return true
     else
@@ -50,6 +58,10 @@ end
 
 module.getItemCount = function(inventoryName, item, metadata)
     if not CheckArgs(inventoryName, item) then return end
+    if metadata then
+        print("qb-core does not support metadata with their native functions. Please, change your inventory settings to 'qb-inventory' or something else that supports metadata.")
+        return false
+    end
     local Player = QBCore.Functions.GetPlayer(inventoryName)
     if Player then
         if item == "money" then

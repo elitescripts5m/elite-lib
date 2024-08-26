@@ -9,6 +9,10 @@ end
 
 module.addItem = function(inventoryName, item, count, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
+    if metadata then
+        print("ESX does not support metadata with their native functions. Please, change your inventory settings to 'ox_inventory' or something else that supports metadata.")
+        return false
+    end
     local xPlayer = ESX.GetPlayerFromId(inventoryName)
     if xPlayer then
         if item == "money" then
@@ -22,8 +26,12 @@ module.addItem = function(inventoryName, item, count, metadata)
     return false
 end
 
-module.removeItem = function(inventoryName, item, count, metadata)
+module.removeItem = function(inventoryName, item, count, slot, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
+    if metadata then
+        print("ESX does not support metadata with their native functions. Please, change your inventory settings to 'ox_inventory' or something else that supports metadata.")
+        return false
+    end
     local xPlayer = ESX.GetPlayerFromId(inventoryName)
     if xPlayer then
         if item == "money" then
@@ -38,12 +46,20 @@ module.removeItem = function(inventoryName, item, count, metadata)
 end
 
 module.canCarryItem = function(inventoryName, item, count, metadata)
+    if metadata then
+        print("ESX does not support metadata with their native functions. Please, change your inventory settings to 'ox_inventory' or something else that supports metadata.")
+        return false
+    end
     local xPlayer = ESX.GetPlayerFromId(inventoryName)
     return xPlayer.canCarryItem(item, count)
 end
 
 module.getItemCount = function(inventoryName, item, metadata)
     if not CheckArgs(inventoryName, item) then return end
+    if metadata then
+        print("ESX does not support metadata with their native functions. Please, change your inventory settings to 'ox_inventory' or something else that supports metadata.")
+        return false
+    end
     local xPlayer = ESX.GetPlayerFromId(inventoryName)
     if xPlayer then
         if item == "money" then

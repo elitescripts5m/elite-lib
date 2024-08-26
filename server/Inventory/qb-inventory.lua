@@ -7,7 +7,7 @@ module.openInventory = function(playerId, inventoryType, inventoryData)
     return inventory:OpenInventory(playerId, inventoryType, inventoryData)
 end
 
-module.addItem = function(inventoryName, item, count, metadata)
+module.addItem = function(inventoryName, item, count, slot, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
     if item == "money" then
         local Player = QBCore.Functions.GetPlayer(inventoryName)
@@ -16,22 +16,63 @@ module.addItem = function(inventoryName, item, count, metadata)
             return true
         end
     else
-        local success = inventory:AddItem(inventoryName, item, count, false, metadata, "scripted")
+        local success = inventory:AddItem(inventoryName, item, count, slot, metadata, "elite-lib")
         return success
     end
 end
 
-module.removeItem = function(inventoryName, item, count, metadata)
-    if not CheckArgs(inventoryName, item, count) then return end
-    if item == "money" then
-        local Player = QBCore.Functions.GetPlayer(inventoryName)
-        if Player then
-            Player.Functions.RemoveMoney("cash", count)
-            return true
+local function isValidMetadata(itemInfo, metadata)
+    for index, value in pairs(metadata) do
+        if not (itemInfo[index] and itemInfo[index] == value) then
+            return false
         end
+    end
+    return true
+end
+
+local function removeItemWithMetadata(Player, inventoryName, item, count, metadata)
+    local items = Player.Functions.GetItemsByName(item)
+    if not items then return false end
+
+    local cachedSlots = {}
+    local removeCount = count
+    local success = false
+
+    for _, v in pairs(items) do
+        if isValidMetadata(v.info, metadata) then
+            local removeAmount = math.min(v.amount, removeCount)
+            cachedSlots[#cachedSlots + 1] = { slot = v.slot, count = removeAmount }
+            removeCount = removeCount - removeAmount
+            if removeCount <= 0 then
+                for _, slotItem in pairs(cachedSlots) do
+                    if inventory:RemoveItem(inventoryName, item, slotItem.count, slotItem.slot, "elite-lib") then
+                        TriggerClientEvent("inventory:client:ItemBox", inventoryName, QBCore.Shared.Items[item], "remove", 1)
+                    end
+                end
+                success = true
+                break
+            end
+        end
+    end
+
+    return success
+end
+
+module.removeItem = function(inventoryName, item, count, slot, metadata)
+    if not CheckArgs(inventoryName, item, count) then return end
+
+    local Player = QBCore.Functions.GetPlayer(inventoryName)
+    if not Player then return false end
+
+    if item == "money" then
+        Player.Functions.RemoveMoney("cash", count)
+        return true
+    end
+
+    if metadata then
+        return removeItemWithMetadata(Player, inventoryName, item, count, metadata)
     else
-        local success = inventory:RemoveItem(inventoryName, item, count, false, "scripted")
-        return success
+        return inventory:RemoveItem(inventoryName, item, count, slot, "elite-lib")
     end
 end
 
