@@ -10,7 +10,7 @@ module.addItem = function(inventoryName, item, count, metadata)
     return
 end
 
-module.removeItem = function(inventoryName, item, count, metadata)
+module.removeItem = function(inventoryName, item, count, metadata, slot)
     if not CheckArgs(inventoryName, item, count) then return end
     return
 end
@@ -22,6 +22,16 @@ end
 
 module.getItemCount = function(inventoryName, item, metadata)
     if not CheckArgs(inventoryName, item) then return end
+    return
+end
+
+module.getItemsByName = function(inventoryName, itemName, metadata)
+    if not CheckArgs(inventoryName, itemName) then return end
+    return
+end
+
+module.getItemLabel = function(itemName)
+    if not CheckArgs(itemName) then return end
     return
 end
 

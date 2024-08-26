@@ -58,7 +58,7 @@ local function removeItemWithMetadata(Player, inventoryName, item, count, metada
     return success
 end
 
-module.removeItem = function(inventoryName, item, count, slot, metadata)
+module.removeItem = function(inventoryName, item, count, metadata, slot)
     if not CheckArgs(inventoryName, item, count) then return end
 
     local Player = QBCore.Functions.GetPlayer(inventoryName)
@@ -96,6 +96,28 @@ module.getItemCount = function(inventoryName, item, metadata)
     else
         return inventory:GetItemCount(inventoryName, item)
     end
+end
+
+module.getItemsByName = function(inventoryName, itemName, metadata)
+    if not CheckArgs(inventoryName, itemName) then return end
+    local items = inventory:GetItemsByName(inventoryName, itemName)
+
+    if metadata then
+        local metadataItems = {}
+        for _, v in pairs(items) do
+            if isValidMetadata(v.info, metadata) then
+                metadataItems[#metadataItems + 1] = v
+            end
+        end
+        return metadataItems ~= {} and metadataItems or nil
+    else
+        return items
+    end
+end
+
+module.getItemLabel = function(itemName)
+    if not CheckArgs(itemName) then return end
+    return QBCore.Shared.Items[itemName].label
 end
 
 module.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight, stashOwner, stashGroups)

@@ -12,7 +12,7 @@ module.addItem = function(inventoryName, item, count, metadata)
     return success
 end
 
-module.removeItem = function(inventoryName, item, count, slot, metadata)
+module.removeItem = function(inventoryName, item, count, metadata, slot)
     if not CheckArgs(inventoryName, item, count) then return end
     local success = inventory:RemoveItem(inventoryName, item, count, slot, metadata)
     return success
@@ -26,6 +26,16 @@ end
 module.getItemCount = function(inventoryName, item, metadata)
     if not CheckArgs(inventoryName, item) then return end
     return inventory:GetItemCount(inventoryName, item, metadata)
+end
+
+module.getItemsByName = function(inventoryName, itemName, metadata)
+    if not CheckArgs(inventoryName, itemName) then return end
+    return inventory:Search(inventoryName, "slots", itemName, metadata)
+end
+
+module.getItemLabel = function(itemName)
+    if not CheckArgs(itemName) then return end
+    return inventory:Items(itemName).label
 end
 
 module.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight, stashOwner, stashGroups)

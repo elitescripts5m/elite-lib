@@ -26,7 +26,7 @@ module.addItem = function(inventoryName, item, count, metadata)
     return false
 end
 
-module.removeItem = function(inventoryName, item, count, slot, metadata)
+module.removeItem = function(inventoryName, item, count, metadata, slot)
     if not CheckArgs(inventoryName, item, count) then return end
     if metadata then
         print("ESX does not support metadata with their native functions. Please, change your inventory settings to 'ox_inventory' or something else that supports metadata.")
@@ -70,6 +70,18 @@ module.getItemCount = function(inventoryName, item, metadata)
         end
     end
     return 0
+end
+
+module.getItemsByName = function(inventoryName, itemName, metadata)
+    if not CheckArgs(inventoryName, itemName) then return end
+    --[[ NOT AVAILABLE ]]
+    print("The function for 'getItemsByName' does not exist in ESX. Use either ox_inventory or any other option in elite-lib.")
+    return nil
+end
+
+module.getItemLabel = function(itemName)
+    if not CheckArgs(itemName) then return end
+    return ESX.GetItemLabel(itemName)
 end
 
 module.registerStash = function(stashName, stashLabel, stashSlots, stashMaxWeight, stashOwner, stashGroups)
