@@ -133,4 +133,9 @@ module.notify = function(playerId, message, type, time)
     TriggerClientEvent("QBCore:Notify", playerId, message, type or nil, time or nil)
 end
 
+module.createUsableItem = function(itemName, func)
+    if not CheckArgs(itemName, func) then return end
+    qbox:CreateUseableItem(itemName, func)
+end
+
 return module

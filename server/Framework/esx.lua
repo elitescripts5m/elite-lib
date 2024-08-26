@@ -135,4 +135,9 @@ module.notify = function(playerId, message, type, time)
     player.showNotification(message)
 end
 
+module.createUsableItem = function(itemName, func)
+    if not CheckArgs(itemName, func) then return end
+    ESX.RegisterUsableItem(itemName, func)
+end
+
 return module

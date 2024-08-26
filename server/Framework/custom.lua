@@ -110,4 +110,8 @@ module.notify = function(playerId, message, type, time)
     if not CheckArgs(playerId, message) then return end
 end
 
+module.createUsableItem = function(itemName, func)
+    if not CheckArgs(itemName, func) then return end
+end
+
 return module
