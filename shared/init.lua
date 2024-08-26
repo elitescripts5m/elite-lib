@@ -87,6 +87,14 @@ local LibConfig = {
                 ["custom"] = "custom.lua"
             }
         },
+        Progressbar = {
+            client = {
+                ["progressbar"] = "qb.lua",
+                ["es_extended"] = "esx.lua",
+                ["ox_lib"] = "ox.lua",
+                ["custom"] = "custom.lua"
+            }
+        },
         Utils = {
             client = {
                 ["utils"] = "utils.lua"
