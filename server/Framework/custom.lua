@@ -2,6 +2,8 @@ local module = {}
 
 local function validatePlayer(player)
     if not player then
+        local funcInfo = debug.getinfo(2, "nSl")
+        local funcName = funcInfo.name or "unknown function"
         DebugPrint(("Framework player is not valid in function '%s'"):format(funcName), "error")
         return false
     end
