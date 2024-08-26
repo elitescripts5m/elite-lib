@@ -6,6 +6,11 @@ module.addEntityTarget = function(netIds, options)
     oxtarget:addEntity(netIds, options)
 end
 
+module.addLocalEntityTarget = function(entity, options)
+    if not CheckArgs(entity, options) then return end
+    oxtarget:addLocalEntity(entity, options)
+end
+
 module.addCircleZone = function(circledata)
     if not CheckArgs(circledata.coords, circledata.options) then return end
     oxtarget:addSphereZone(circledata)

@@ -16,6 +16,8 @@ module.addEntityTarget = function(netIds, options)
     qbtarget:AddTargetEntity(netIds, { options = formattedOptions, distance = 2.0 })
 end
 
+module.addLocalEntityTarget = module.addEntityTarget
+
 module.addCircleZone = function(circledata)
     if not CheckArgs(circledata.coords, circledata.options) then return end
     local name = circledata.name or ("circleZone" .. math.random(1, 999999999))
