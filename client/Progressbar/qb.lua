@@ -6,7 +6,7 @@ function module.showProgress(data)
     local disableControl = data.disableControl or {}
 
     exports["progressbar"]:Progress({
-        name = "progress",
+        name = data.name or "progress",
         duration = data.duration,
         label = data.label,
         useWhileDead = data.useWhileDead,
@@ -21,13 +21,13 @@ function module.showProgress(data)
             animDict = data.animation.dict,
             anim = data.animation.clip,
             flags = data.animation.flag
-        },
+        } or {},
         prop = data.prop and {
             model = data.prop.model,
             bone = data.prop.bone,
             coords = data.prop.pos,
             rotation = data.prop.rot
-        },
+        } or {},
     }, function(cancelled)
         promise:resolve(not cancelled)
     end)
