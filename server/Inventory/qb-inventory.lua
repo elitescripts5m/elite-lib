@@ -16,6 +16,7 @@ module.addItem = function(inventoryName, item, count, slot, metadata)
             return true
         end
     else
+        TriggerClientEvent("qb-inventory:client:ItemBox", inventoryName, QBCore.Shared.Items[item], "add", count)
         local success = inventory:AddItem(inventoryName, item, count, slot, metadata, "elite-lib")
         return success
     end
@@ -46,7 +47,7 @@ local function removeItemWithMetadata(Player, inventoryName, item, count, metada
             if removeCount <= 0 then
                 for _, slotItem in pairs(cachedSlots) do
                     if inventory:RemoveItem(inventoryName, item, slotItem.count, slotItem.slot, "elite-lib") then
-                        TriggerClientEvent("inventory:client:ItemBox", inventoryName, QBCore.Shared.Items[item], "remove", 1)
+                        TriggerClientEvent("qb-inventory:client:ItemBox", inventoryName, QBCore.Shared.Items[item], "remove", slotItem.count)
                     end
                 end
                 success = true
@@ -72,6 +73,7 @@ module.removeItem = function(inventoryName, item, count, metadata, slot)
     if metadata then
         return removeItemWithMetadata(Player, inventoryName, item, count, metadata)
     else
+        TriggerClientEvent("qb-inventory:client:ItemBox", inventoryName, QBCore.Shared.Items[item], "remove", count)
         return inventory:RemoveItem(inventoryName, item, count, slot, "elite-lib")
     end
 end
