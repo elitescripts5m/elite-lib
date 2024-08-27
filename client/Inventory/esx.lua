@@ -27,6 +27,10 @@ end
 
 module.getItemCount = function(itemName, metadata)
     if not CheckArgs(itemName) then return end
+    if metadata then
+        print("ESX does not support metadata with their native functions. Please, change your inventory settings to 'ox_inventory' or something else that supports metadata in elite-lib settings.")
+        return false
+    end
     local xPlayer = ESX.GetPlayerData()
     local count = 0
     for _, item in pairs(xPlayer.inventory) do
