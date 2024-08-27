@@ -19,7 +19,7 @@ module.getJob = function()
     return
 end
 
-module.TriggerServerCallback = function(name, cb, ...)
+module.triggerServerCallback = function(name, cb, ...)
 
 end
 

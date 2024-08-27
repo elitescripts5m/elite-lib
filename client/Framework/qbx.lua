@@ -36,7 +36,7 @@ module.getJob = function()
     }
 end
 
-module.TriggerServerCallback = function(name, cb, ...)
+module.triggerServerCallback = function(name, cb, ...)
     QBCore.Functions.TriggerCallback(name, cb, ...)
 end
 
