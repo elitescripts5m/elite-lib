@@ -27,7 +27,7 @@ module.unloadAnimDict = function(animDict)
     RemoveAnimDict(animDict)
 end
 
-module.playAnim = function(animDict, animName, duration, flag, ped)
+module.playAnim = function(ped, animDict, animName, duration, flag)
     if not CheckArgs(animDict, animName) then return end
 	module.loadAnimDict(animDict)
 	TaskPlayAnim(ped and ped or PlayerPedId(), animDict, animName, 8.0, -8.0, duration or 30000, flag or 50, 1, false, false, false)
