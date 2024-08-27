@@ -4,107 +4,37 @@ Elite = {
 }
 Elite.Locale.__index = Elite.Locale
 
-local LibConfig = {
-    Settings = {
-        Debug = false,
-        Framework = "auto", --[[
-            Options:
-                "auto",
-                "esx",
-                "qb",
-                "qbox",
-                "custom"
-        ]]
-        Inventory = "auto", --[[
-            Options:
-                "auto",
-                "esx" (native, not recommended),
-                "qb" (native, not recommended),
-                "ox_inventory",
-                "qb-inventory",
-                "custom"
-        ]]
-        Target = "auto", --[[
-            Options:
-                "auto",
-                "ox",
-                "qb",
-                "custom"
-        ]]
-        Database = "auto", --[[
-            Options:
-                "auto",
-                "esx",
-                "qb",
-                "qbox",
-                "custom"
-        ]]
-        Utils = "utils" -- Don"t change this!
-    },
-    Modules = {
-        Framework = {
-            client = {
-                ["es_extended"] = "esx.lua",
-                ["qb-core"] = "qb.lua",
-                ["qbx_core"] = "qbx.lua",
-                ["custom"] = "custom.lua"
-            },
-            server = {
-                ["es_extended"] = "esx.lua",
-                ["qb-core"] = "qb.lua",
-                ["qbx_core"] = "qbx.lua",
-                ["custom"] = "custom.lua"
-            },
-        },
-        Inventory = {
-            client = {
-                ["ox_inventory"] = "ox_inventory.lua",
-                ["qb-inventory"] = "qb-inventory.lua",
-                ["qb-core"] = "qb.lua",
-                ["es_extended"] = "esx.lua",
-                ["custom"] = "custom.lua"
-            },
-            server = {
-                ["ox_inventory"] = "ox_inventory.lua",
-                ["qb-inventory"] = "qb-inventory.lua",
-                ["qb-core"] = "qb.lua",
-                ["es_extended"] = "esx.lua",
-                ["custom"] = "custom.lua"
-            },
-        },
-        Target = {
-            client = {
-                ["ox_target"] = "ox.lua",
-                ["qb-target"] = "qb.lua",
-                ["custom"] = "custom.lua"
-            }
-        },
-        Database = {
-            server = {
-                ["es_extended"] = "esx.lua",
-                ["qb-core"] = "qb.lua",
-                ["qbx_core"] = "qbx.lua",
-                ["custom"] = "custom.lua"
-            }
-        },
-        Progressbar = {
-            client = {
-                ["progressbar"] = "qb.lua",
-                ["es_extended"] = "esx.lua",
-                ["ox_lib"] = "ox.lua",
-                ["custom"] = "custom.lua"
-            }
-        },
-        Utils = {
-            client = {
-                ["utils"] = "utils.lua"
-            },
-            server = {
-                ["utils"] = "utils.lua"
-            }
-        }
-    }
-}
+local function loadBridgeModule(modulePath)
+    local file = LoadResourceFile("elite-lib", modulePath)
+    if not file then
+        DebugPrint(("Failed to load module %s: File not found"):format(modulePath), "error")
+        return nil
+    end
+
+    local func, err = load(file, modulePath)
+    if not func then
+        DebugPrint(("Failed to load module %s: %s"):format(modulePath, err), "error")
+        return nil
+    end
+
+    local success, module = pcall(func)
+    if not success then
+        DebugPrint(("Failed to load module %s: %s"):format(modulePath, module), "error")
+        return nil
+    end
+
+    return module
+end
+
+local LibConfig = {}
+local importedConfig = loadBridgeModule("shared/config.lua")
+if importedConfig then
+    for setting, table in pairs(importedConfig) do
+        LibConfig[setting] = table
+    end
+else
+    DebugPrint("Failed to load config, from 'shared/config.lua'. Make sure that the file exists and that it doesn't have any problems.", "error")
+end
 local isServer = IsDuplicityVersion()
 local printtypes = {
     ["error"] = "^1[ERROR] ^0",
@@ -188,28 +118,6 @@ function RemoveCache(key)
     end
 end
 
-local function loadBridgeModule(modulePath)
-    local file = LoadResourceFile("elite-lib", modulePath)
-    if not file then
-        DebugPrint(("Failed to load module %s: File not found"):format(modulePath), "error")
-        return nil
-    end
-
-    local func, err = load(file, modulePath)
-    if not func then
-        DebugPrint(("Failed to load module %s: %s"):format(modulePath, err), "error")
-        return nil
-    end
-
-    local success, module = pcall(func)
-    if not success then
-        DebugPrint(("Failed to load module %s: %s"):format(modulePath, module), "error")
-        return nil
-    end
-
-    return module
-end
-
 local function setup()
     local missingCategories = {}
     local loadedModules = {
@@ -235,7 +143,7 @@ local function setup()
             for framework, path in pairs(module.server) do
                 if loadedModules.server[name] then break end
                 if setting and framework ~= setting then goto continue end
-                if framework == "utils" or framework == "custom" or GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
+                if GetResourceState(framework) ~= "missing" or (setting and framework == setting) then
                     local data = loadBridgeModule("server/" .. name .. "/" .. path)
                     if data then
                         for funcName, func in pairs(data) do Elite[funcName] = func end
