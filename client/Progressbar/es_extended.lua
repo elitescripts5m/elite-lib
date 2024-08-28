@@ -1,4 +1,5 @@
 local module = {}
+ESX = exports["es_extended"]:getSharedObject()
 
 function module.showProgress(data)
     local promise = promise.new()
