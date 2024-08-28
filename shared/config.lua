@@ -34,6 +34,22 @@ Config.Settings = {
             "qbox",
             "custom"
     ]]
+    Progressbar = "auto", --[[
+        Options:
+            "auto",
+            "es_extended",
+            "progressbar", (QBCore)
+            "ox_lib",
+            "custom"
+    ]]
+    Menu = "auto", --[[
+        Options:
+            "auto",
+            "esx_default_menu",
+            "ox_lib",
+            "qb-menu",
+            "custom"
+    ]]
     Utils = "utils" -- Don"t change this!
 }
 
@@ -85,9 +101,17 @@ Config.Modules = {
     },
     Progressbar = {
         client = {
-            ["progressbar"] = "qb.lua",
-            ["es_extended"] = "esx.lua",
-            ["ox_lib"] = "ox.lua",
+            ["progressbar"] = "progressbar.lua",
+            ["es_extended"] = "es_extended.lua",
+            ["ox_lib"] = "ox_lib.lua",
+            ["custom"] = "custom.lua"
+        }
+    },
+    Menu = {
+        client = {
+            ["qb-menu"] = "qb-menu.lua",
+            ["esx_menu_default"] = "esx_menu_default.lua",
+            ["ox_lib"] = "ox_lib.lua",
             ["custom"] = "custom.lua"
         }
     },
