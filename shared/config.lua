@@ -10,7 +10,7 @@ Config.Settings = {
             "qbox",
             "custom"
     ]]
-    Inventory = "auto", --[[
+    Inventory = "qb-inventory", --[[
         Options:
             "auto",
             "ox_inventory", (Recommended)
@@ -56,6 +56,14 @@ Config.Settings = {
             "esx_menu_dialog", (NOT RECOMMENDED)
             "ox_lib",
             "qb-input",
+            "custom"
+    ]]
+    Skillcheck = "auto", --[[
+        Options:
+            "auto",
+            "qb-minigames",
+            "ox_lib",
+            "ps-ui",
             "custom"
     ]]
     Utils = "utils" -- Don"t change this!
@@ -128,6 +136,14 @@ Config.Modules = {
             ["qb-input"] = "qb-input.lua",
             ["esx_menu_dialog"] = "esx_menu_dialog.lua",
             ["ox_lib"] = "ox_lib.lua",
+            ["custom"] = "custom.lua"
+        }
+    },
+    Skillcheck = {
+        client = {
+            ["qb-minigames"] = "qb-minigames.lua",
+            ["ox_lib"] = "ox_lib.lua",
+            ["ps-ui"] = "ps-ui.lua",
             ["custom"] = "custom.lua"
         }
     },
