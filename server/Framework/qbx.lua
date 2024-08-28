@@ -30,7 +30,7 @@ module.getIdentifier = function(frPlayer)
     return identifier
 end
 
-module.RegisterServerCallback = function(name, cb)
+module.registerServerCallback = function(name, cb)
     return QBCore.Functions.CreateCallback(name, cb)
 end
 

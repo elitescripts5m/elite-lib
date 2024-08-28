@@ -29,7 +29,7 @@ module.getIdentifier = function(frPlayer)
     return identifier
 end
 
-module.RegisterServerCallback = function(name, callback)
+module.registerServerCallback = function(name, callback)
     if not CheckArgs(name, callback) then return end
     QBCore.Functions.CreateCallback(name, callback)
 end
