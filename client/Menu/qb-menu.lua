@@ -11,7 +11,7 @@ module.showMenu = function(header, options, footer)
         params = {
             isServer = header.isServer or false,
             isAction = header.isAction or false,
-            event = header.event,
+            event = header.event or nil,
             args = header.args or nil
         }
     }
