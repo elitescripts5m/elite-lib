@@ -50,6 +50,14 @@ Config.Settings = {
             "qb-menu",
             "custom"
     ]]
+    Input = "auto", --[[
+        Options:
+            "auto",
+            "esx_menu_dialog", (NOT RECOMMENDED)
+            "ox_lib",
+            "qb-input",
+            "custom"
+    ]]
     Utils = "utils" -- Don"t change this!
 }
 
@@ -111,6 +119,14 @@ Config.Modules = {
         client = {
             ["qb-menu"] = "qb-menu.lua",
             ["esx_menu_default"] = "esx_menu_default.lua",
+            ["ox_lib"] = "ox_lib.lua",
+            ["custom"] = "custom.lua"
+        }
+    },
+    Input = {
+        client = {
+            ["qb-input"] = "qb-input.lua",
+            ["esx_menu_dialog"] = "esx_menu_dialog.lua",
             ["ox_lib"] = "ox_lib.lua",
             ["custom"] = "custom.lua"
         }
