@@ -2,6 +2,7 @@ local module = {}
 ESX = exports["es_extended"]:getSharedObject()
 
 function module.showProgress(data)
+    if not CheckArgs(data) then return end
     local promise = promise.new()
     ESX.Progressbar(data.label, data.duration, {
         FreezePlayer = data.controlDisables and data.controlDisables.move,

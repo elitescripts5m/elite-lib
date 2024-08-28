@@ -1,6 +1,7 @@
 local module = {}
 
 function module.showProgress(data)
+    if not CheckArgs(data) then return end
     return exports.ox_lib:progressBar({
         duration = data.duration,
         label = data.label,

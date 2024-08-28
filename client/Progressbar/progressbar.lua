@@ -2,6 +2,7 @@ local module = {}
 module.state = false
 
 function module.showProgress(data)
+    if not CheckArgs(data) then return end
     local promise = promise.new()
     local disableControl = data.disableControl or {}
 
