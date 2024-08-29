@@ -10,13 +10,36 @@ module.addEntityTarget = function(netIds, options)
             label = option.label,
             action = option.onSelect,
             job = option.groups,
-            distance = option.distance
+            distance = option.distance,
+            canInteract = option.canInteract
         }
     end
-    qbtarget:AddTargetEntity(netIds, { options = formattedOptions, distance = 2.0 })
+    qbtarget:AddTargetEntity(netIds, {
+        options = formattedOptions,
+        distance = 2.0
+    })
 end
 
 module.addLocalEntityTarget = module.addEntityTarget
+
+module.addModelTarget = function(models, options)
+    if not CheckArgs(models, options) then return end
+    local formattedOptions = {}
+    for _, option in pairs(options) do
+        formattedOptions[#formattedOptions + 1] = {
+            icon = option.icon,
+            label = option.label,
+            action = option.onSelect,
+            job = option.groups,
+            distance = option.distance,
+            canInteract = option.canInteract
+        }
+    end
+    qbtarget:AddTargetModel(models, {
+        options = formattedOptions,
+        distance = 2.0
+    })
+end
 
 module.addCircleZone = function(circledata)
     if not CheckArgs(circledata.coords, circledata.options) then return end
@@ -29,7 +52,8 @@ module.addCircleZone = function(circledata)
             label = option.label,
             action = option.onSelect,
             job = option.groups,
-            distance = option.distance
+            distance = option.distance,
+            canInteract = option.canInteract
         }
     end
     qbtarget:AddCircleZone(name, circledata.coords, radius, { name = name, debugPoly = circledata.debugPoly or false }, {
@@ -51,7 +75,8 @@ module.addBoxZone = function(boxdata)
             label = option.label,
             action = option.onSelect,
             job = option.groups,
-            distance = option.distance
+            distance = option.distance,
+            canInteract = option.canInteract
         }
     end
     qbtarget:AddBoxZone(name, boxdata.coords, length, width, { name = name, heading = heading, debugPoly = boxdata.debugPoly or false, minZ = boxdata.minZ or boxdata.coords.z - 1, maxZ = boxdata.maxZ or boxdata.coords.z + 1 }, {
