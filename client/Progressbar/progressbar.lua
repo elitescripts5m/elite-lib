@@ -13,10 +13,10 @@ function module.showProgress(data)
         useWhileDead = data.useWhileDead,
         canCancel = data.canCancel,
         controlDisables = {
-            disableMovement = disableControl.move ~= false,
-            disableCarMovement = disableControl.car ~= false,
-            disableMouse = disableControl.mouse ~= false,
-            disableCombat = disableControl.combat ~= false
+            disableMovement = disableControl.move or false,
+            disableCarMovement = disableControl.car or false,
+            disableMouse = disableControl.mouse or false,
+            disableCombat = disableControl.combat or false
         },
         animation = data.animation and {
             animDict = data.animation.dict,
