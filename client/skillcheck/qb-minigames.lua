@@ -4,7 +4,7 @@ module.skillbar = function(difficulty, buttons)
     local registeredButtons = ""
     if buttons then
         for _, v in pairs(buttons) do
-            registeredButtons = registeredButtons + v
+            registeredButtons = registeredButtons .. v
         end
     else
         registeredButtons = "e"
