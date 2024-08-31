@@ -2,7 +2,7 @@ fx_version "cerulean"
 game "gta5"
 name "Elite Lib"
 author "Elite Scripts"
-version "1.0.0"
+version "1.0.1"
 
 dependencies {
     "/server:7290",
