@@ -15,8 +15,11 @@ module.addItem = function(inventoryName, item, count, metadata)
     end
     local xPlayer = ESX.GetPlayerFromId(inventoryName)
     if xPlayer then
-        if item == "money" then
+        if item == "money" or item == "cash" then
             xPlayer.addMoney(count)
+            return true
+        elseif item == "bank" then
+            xPlayer.addAccountMoney("bank", count)
             return true
         else
             xPlayer.addInventoryItem(item, count)
@@ -62,8 +65,10 @@ module.getItemCount = function(inventoryName, item, metadata)
     end
     local xPlayer = ESX.GetPlayerFromId(inventoryName)
     if xPlayer then
-        if item == "money" then
+        if item == "money" or item == "cash" then
             return xPlayer.getMoney()
+        elseif item == "bank" then
+            return xPlayer.getAccount("bank").money
         else
             local inventoryItem = xPlayer.getInventoryItem(item)
             return inventoryItem and inventoryItem.count or 0

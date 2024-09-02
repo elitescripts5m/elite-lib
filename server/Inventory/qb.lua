@@ -11,8 +11,8 @@ module.addItem = function(inventoryName, item, count, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
     local Player = QBCore.Functions.GetPlayer(inventoryName)
     if Player then
-        if item == "money" then
-            Player.Functions.AddMoney("cash", count)
+        if item == "money" or item == "cash" or item == "bank" then
+            Player.Functions.AddMoney(item == "bank" and "bank" or "cash", count)
             return true
         else
             return Player.Functions.AddItem(item, count, false, metadata)
@@ -29,8 +29,8 @@ module.removeItem = function(inventoryName, item, count, metadata, slot)
     end
     local Player = QBCore.Functions.GetPlayer(inventoryName)
     if Player then
-        if item == "money" then
-            Player.Functions.RemoveMoney("cash", count)
+        if item == "money" or item == "cash" or item == "bank" then
+            Player.Functions.RemoveMoney(item == "bank" and "bank" or "cash", count)
             return true
         else
             return Player.Functions.RemoveItem(item, count)
@@ -64,8 +64,10 @@ module.getItemCount = function(inventoryName, item, metadata)
     end
     local Player = QBCore.Functions.GetPlayer(inventoryName)
     if Player then
-        if item == "money" then
-            return Player.Functions.GetMoney("cash")
+        if item == "money" or item == "cash" or item == "bank" then
+            if Player then
+                return Player.Functions.GetMoney(item == "bank" and "bank" or "cash")
+            end
         else
             return Player.Functions.GetItemByName(item) and Player.Functions.GetItemByName(item).amount or 0
         end

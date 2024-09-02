@@ -8,12 +8,21 @@ end
 
 module.addItem = function(inventoryName, item, count, metadata)
     if not CheckArgs(inventoryName, item, count) then return end
+    if item == "bank" or item == "cash" then
+        -- You can add your code for adding cash/bank here. "money" is used for cash by ox_inventory.
+        -- There is no bank account by default in this inventory, which you need to add from your framework by yourself.
+        item = "money"
+    end
     local success = inventory:AddItem(inventoryName, item, count)
     return success
 end
 
 module.removeItem = function(inventoryName, item, count, metadata, slot)
     if not CheckArgs(inventoryName, item, count) then return end
+    -- As for module.addItem, you have to add your own code for removing bank money here. "money" is used for cash in ox_inventory.
+    if item == "cash" or item == "bank" then
+        item = "money"
+    end
     local success = inventory:RemoveItem(inventoryName, item, count, slot, metadata)
     return success
 end
@@ -25,6 +34,10 @@ end
 
 module.getItemCount = function(inventoryName, item, metadata)
     if not CheckArgs(inventoryName, item) then return end
+    -- As for module.addItem, you have to add your own check here for bank. "money" is used for cash in ox_inventory.
+    if item == "cash" or item == "bank" then
+        item = "money"
+    end
     return inventory:GetItemCount(inventoryName, item, metadata)
 end
 
