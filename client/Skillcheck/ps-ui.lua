@@ -6,7 +6,7 @@ module.skillbar = function(difficulty, buttons)
     if difficulty == "easy" then
         circles = 1
         time = 25
-    elseif difficulty == "normal" then
+    elseif difficulty == "medium" then
         circles = 2
         time = 20
     elseif difficulty == "hard" then
