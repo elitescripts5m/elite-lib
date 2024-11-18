@@ -54,6 +54,7 @@ local function updateCheck(resourceName)
     PerformHttpRequest("https://elite-website-sable.vercel.app/api/release?script_name="..resourceName, function(status, response)
         if status ~= 200 then return end
         local data = json.decode(response)[1]
+        if not data or not data.version then return end
         if currentVersion ~= data.version then
             print("^2[UPDATE] ^7An update for ^2"..resourceName.." ^7is available.")
             print("Current version: ^1v"..currentVersion.."^0. Latest version: ^5v"..data.version.."^0.")
