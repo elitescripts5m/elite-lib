@@ -26,7 +26,6 @@ module.getIdentifier = function(frPlayer)
 end
 
 module.registerServerCallback = function(name, callback)
-    if not CheckArgs(name, callback) then return end
     return
 end
 
