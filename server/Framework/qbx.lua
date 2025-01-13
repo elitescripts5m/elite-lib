@@ -1,6 +1,12 @@
 local module = {}
 local qbox = exports.qbx_core
-QBCore = exports["qb-core"]:GetCoreObject()
+
+--[[
+    We are trying to add all functionality to qbox. But we are still waiting for some functions that does not yet exist in qbox, that exists in other frameworks.
+    Feel free to update this file with their updated functions and exports as soon as they arrive. Thanks for your patience.
+]]
+
+QBCore = exports["qb-core"]:GetCoreObject() -- This has to go!
 
 local function validatePlayer(player)
     if not player or not player.PlayerData or not player.PlayerData.source then
@@ -30,8 +36,9 @@ module.getIdentifier = function(frPlayer)
     return identifier
 end
 
-module.registerServerCallback = function(name, cb)
-    return QBCore.Functions.CreateCallback(name, cb)
+module.registerServerCallback = function(name, callback)
+    if not CheckArgs(name, callback) then return end
+    return QBCore.Functions.CreateCallback(name, callback)
 end
 
 module.getSource = function(frPlayer)
