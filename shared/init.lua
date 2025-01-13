@@ -87,7 +87,7 @@ function CheckArgs(...)
 
     for i = 1, select("#", ...) do
         local arg = select(i, ...)
-        local argName = debug.getlocal(2, i)
+        local argName = debug.getlocal and debug.getlocal(2, i) or ("arg#%d"):format(i)
         if arg == nil then
             DebugPrint(("Missing required argument '%s' in %s"):format(argName or "unknown argument", funcName), "error")
             return false

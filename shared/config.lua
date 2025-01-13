@@ -10,7 +10,7 @@ Config.Settings = {
             "qbox",
             "custom"
     ]]
-    Inventory = "qb-inventory", --[[
+    Inventory = "auto", --[[
         Options:
             "auto",
             "ox_inventory", (Recommended)
